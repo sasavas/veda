@@ -1,0 +1,25 @@
+using Veda.Application.SharedKernel.Models;
+
+namespace Veda.Application.SharedKernel.DomainServices.Email;
+
+public abstract class EmailDTO
+{
+    protected EmailDTO(EmailAddress to, string title)
+    {
+        To = to;
+        Title = title;
+    }
+
+    public EmailAddress To { get; set; }
+    public string Title { get; set; }
+}
+
+public class HtmlEmailDTO : EmailDTO
+{
+    public string Content { get; set; }
+
+    public HtmlEmailDTO(EmailAddress to, string title, string content) : base(to, title)
+    {
+        Content = content;
+    }
+}
