@@ -1,4 +1,4 @@
-namespace Veda.Application.SharedKernel.DomainServices.HtmlHelper;
+namespace Veda.Application.SharedKernel.Services.HtmlHelper;
 
 public interface IHtmlService
 {

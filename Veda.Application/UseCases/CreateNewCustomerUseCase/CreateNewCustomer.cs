@@ -1,12 +1,12 @@
 using Veda.Application.Abstract;
+using Veda.Application.DTOs;
 using Veda.Application.Modules.CustomerModule.DatabaseAccess;
-using Veda.Application.Modules.CustomerModule.DTOs;
 using Veda.Application.Modules.CustomerModule.Models;
-using Veda.Application.SharedKernel.DomainServices.Email;
-using Veda.Application.SharedKernel.DomainServices.HtmlHelper;
 using Veda.Application.SharedKernel.Models;
+using Veda.Application.SharedKernel.Services.Email;
+using Veda.Application.SharedKernel.Services.HtmlHelper;
 
-namespace Veda.Application.Modules.CustomerModule.UseCases;
+namespace Veda.Application.UseCases.CreateNewCustomerUseCase;
 
 public class CreateNewCustomer : UseCase
 {

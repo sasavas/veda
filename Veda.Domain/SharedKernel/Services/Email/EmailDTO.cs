@@ -1,6 +1,6 @@
 using Veda.Application.SharedKernel.Models;
 
-namespace Veda.Application.SharedKernel.DomainServices.Email;
+namespace Veda.Application.SharedKernel.Services.Email;
 
 public abstract class EmailDTO
 {

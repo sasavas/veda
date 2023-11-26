@@ -1,4 +1,4 @@
-namespace Veda.Application.Modules.CustomerModule.DTOs;
+namespace Veda.Application.DTOs;
 
 public record CustomerCreateDTO(
     string FirstName,

@@ -1,4 +1,4 @@
-namespace Veda.Application.SharedKernel.DomainServices.Email;
+namespace Veda.Application.SharedKernel.Services.Email;
 
 public class EmailService : IEmailService
 {
