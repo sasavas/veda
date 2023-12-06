@@ -12,8 +12,9 @@ public class Customer : Entity
     public EmailAddress EmailAddress { get; set; }
     public Password Password { get; set; }
 
-    public MemberShip ActiveMemberShip { get; set; }
-    public List<MemberShip> PreviousMemberShips { get; set; }
-    
-    public List<int> RecipientIds { get; set; }
+    public List<MemberShip> Memberships { get; set; }
+    public MemberShip ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
+
+
+    public List<int> RecipientIds { get; set; } = new();
 }
