@@ -25,6 +25,7 @@ public class Customer : Entity
             DateOfBirth = dateOfBirth,
             EmailAddress = emailAddress,
             TCKimlikNo = tcKimlikNo,
+            Password = password
         };
     }
 

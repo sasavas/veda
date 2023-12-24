@@ -9,6 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjectionFixed" Version="5.1.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -34,6 +36,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Veda.Application\Veda.Application.csproj" />
       <ProjectReference Include="..\Veda.Domain\Veda.Domain.csproj" />
       <ProjectReference Include="..\Veda.Infrastructure\Veda.Infrastructure.csproj" />
       <ProjectReference Include="..\Veda.SharedKernel\Veda.SharedKernel.csproj" />

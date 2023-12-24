@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using Veda.Api.Configurations;
 using Veda.Api.MiddleWares;

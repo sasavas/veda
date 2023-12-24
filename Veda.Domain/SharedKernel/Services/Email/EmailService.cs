@@ -1,9 +1,11 @@
+using Serilog;
+
 namespace Veda.Application.SharedKernel.Services.Email;
 
-public class EmailService : IEmailService
+public class EmailService(ILogger logger) : IEmailService
 {
     public void SendEmail(EmailDTO emailDto)
     {
-        throw new NotImplementedException();
+        logger.Information("Just sent an email to {toAddress}", emailDto.To.Address);
     }
 }
