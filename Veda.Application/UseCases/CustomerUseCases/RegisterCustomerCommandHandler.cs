@@ -30,6 +30,7 @@ public class RegisterCustomerCommandHandler(
             Password = new Password(command.Password)
         };
 
+        //TODO send via Domain events
         emailService.SendEmail(
             new HtmlEmailDTO(
                 customer.EmailAddress,

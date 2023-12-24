@@ -1,0 +1,44 @@
+using System.Linq.Expressions;
+using Veda.Application.Abstract;
+using Veda.Application.DatabaseAccess;
+
+namespace Veda.Infrastructure.DataAccess;
+
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : Entity
+{
+    protected readonly VedaDbContext Context;
+
+    protected BaseRepository(VedaDbContext context)
+    {
+        Context = context;
+    }
+
+    public IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().Where(filter);
+    
+    public TEntity? GetUnique(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().FirstOrDefault(filter);
+
+    public TEntity? GetById(int id) => Context.Set<TEntity>().First(entity => entity.Id == id);
+    
+    public virtual IEnumerable<TEntity> GetList() => Context.Set<TEntity>();
+    
+    public virtual TEntity Create(TEntity aggregateRoot)
+    {
+        var inserted = Context.Set<TEntity>().Add(aggregateRoot);
+        Context.SaveChanges();
+        return inserted.Entity;
+    }
+
+    public virtual TEntity Update(TEntity entity)
+    {
+        var updated = Context.Set<TEntity>().Update(entity);
+        Context.SaveChanges();
+        return updated.Entity;
+    }
+    
+    public virtual void Delete(int entityId)
+    {
+        var toDelete = Context.Set<TEntity>().FirstOrDefault(t => entityId.Equals(t.Id));
+        if(toDelete is not null) 
+            Context.Set<TEntity>().Remove(toDelete);
+    }
+}

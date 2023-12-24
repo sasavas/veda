@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Veda.Application\Veda.Application.csproj" />
       <ProjectReference Include="..\Veda.Domain\Veda.Domain.csproj" />
     </ItemGroup>
 
