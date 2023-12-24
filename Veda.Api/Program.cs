@@ -13,6 +13,7 @@ builder.Host
     .UseSerilog((ctx, lc) => lc
         .ReadFrom.Configuration(ctx.Configuration)
         .Enrich.FromLogContext()
+        .WriteTo.Console()
     );
 
 builder.Services
@@ -38,12 +39,11 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Veda API", Version = "v1" });
-});
 
 builder.Services.AddInfrastructureDependencies();
+
+builder.Services.AddScoped<ApiEndpointHitLoggerMiddleware>();
+builder.Services.AddScoped<ExceptionMiddleware>();
 
 var app = builder.Build();
 
