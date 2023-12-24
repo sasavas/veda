@@ -5,7 +5,7 @@ namespace Veda.Application.Modules.CustomerModule.Models;
 public class MembershipStatus : Entity
 {
     public string StatusName { get; set; }
-    public double DigitalStorageCapacityInBytes { get; set; }
+    public long DigitalStorageCapacityInBytes { get; set; }
     /// <summary>
     /// How many recipient a Customer can have
     /// </summary>
