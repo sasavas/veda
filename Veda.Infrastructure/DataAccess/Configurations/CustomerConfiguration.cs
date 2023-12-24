@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Models;
 
 namespace Veda.Infrastructure.DataAccess.Configurations;
@@ -17,8 +18,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             s => new TCKimlikNo(s));
         
         builder.Property(customer => customer.EmailAddress).HasConversion(
-            no => no.Address,
-            s => new EmailAddress(s));
+            emailAddress => emailAddress.Address,
+            address => new EmailAddress(address));
 
         //TODO! hashleme islemini dikkate almalisin ???
         builder.Property(customer => customer.Password).HasConversion(
@@ -27,5 +28,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 
         builder.HasMany<MemberShip>(customer => customer.Memberships)
             .WithOne();
+
+        builder.HasMany<Recipient>()
+            .WithOne()
+            .IsRequired(); // Recipient will be required to have CustomerId
     }
 }

@@ -1,6 +1,8 @@
+using Veda.Application.Abstract;
+
 namespace Veda.Application.Modules.CustomerModule.Models;
 
-public class MemberShip
+public class MemberShip : Entity
 {
     public MembershipStatus MembershipStatus { get; set; }
 

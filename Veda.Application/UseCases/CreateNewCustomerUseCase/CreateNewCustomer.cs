@@ -1,6 +1,6 @@
 using Veda.Application.Abstract;
+using Veda.Application.DatabaseAccess;
 using Veda.Application.DTOs;
-using Veda.Application.Modules.CustomerModule.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.SharedKernel.Models;
 using Veda.Application.SharedKernel.Services.Email;

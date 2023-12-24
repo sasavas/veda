@@ -16,5 +16,5 @@ public class Customer : Entity
     public MemberShip ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
 
 
-    public List<int> RecipientIds { get; set; } = new();
+    public ICollection<int> RecipientIds { get; set; }
 }

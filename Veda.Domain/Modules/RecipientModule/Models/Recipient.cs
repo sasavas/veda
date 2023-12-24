@@ -10,7 +10,7 @@ public class Recipient : Entity
     public DateOnly DateOfBirth { get; set; }
     public TCKimlikNo TCKimlikNo { get; set; }
     public EmailAddress EMailAddress { get; set; }
-    public PhoneNumber Type { get; set; }
+    public PhoneNumber PhoneNumber { get; set; }
 
     public List<Folder> Folders { get; set; }
 }
