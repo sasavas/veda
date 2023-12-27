@@ -85,8 +85,8 @@ if (app.Environment.IsDevelopment())
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<VedaDbContext>();
-    DatabaseSeeder.Seed(context);
     context.Database.Migrate();
+    DatabaseSeeder.Seed(context);
 }
 
 app.UseHttpsRedirection();
