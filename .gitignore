@@ -3,3 +3,11 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.vs/ProjectEvaluation/veda.metadata.v7.bin
+.vs/ProjectEvaluation/veda.projects.v7.bin
+.vs/Veda/config/applicationhost.config
+.vs/Veda/DesignTimeBuild/.dtbcache.v2
+.vs/Veda/FileContentIndex/60b936b5-7ee1-4a35-9023-274137c3f0b2.vsidx
+.vs/Veda/v17/.futdcache.v2
+.vs/Veda/v17/.suo
+Veda.Api/Veda.Api.csproj.user
