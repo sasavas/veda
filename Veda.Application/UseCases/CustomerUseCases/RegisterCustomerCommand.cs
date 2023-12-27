@@ -17,14 +17,13 @@ public record struct RegisterCustomerCommand(
 public record RegisterCustomerResult(Customer Customer);
 
 public class RegisterCustomerCommandHandler(
-    ILogger<RegisterCustomerCommandHandler> _logger,
+    ILogger<RegisterCustomerCommand> _logger,
     IUnitOfWork unitOfWork,
     IEmailService emailService,
     IHtmlService htmlService) : IRequestHandler<RegisterCustomerCommand, RegisterCustomerResult>
 {
     public Task<RegisterCustomerResult> Handle(RegisterCustomerCommand command, CancellationToken cancellationToken)
     {
-
         try
         {
             var customer = new Customer

@@ -5,11 +5,11 @@ using Veda.Application.SharedKernel.Models;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 
-public record LoginCommand(string Email, string Password) : IRequest<Customer>;
+public record LoginRequest(string Email, string Password) : IRequest<Customer>;
 
-public class LoginCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<LoginCommand, Customer>
+public class LoginRequestHandler(IUnitOfWork unitOfWork) : IRequestHandler<LoginRequest, Customer>
 {
-    public Task<Customer> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public Task<Customer> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var customerRepository = unitOfWork.GetRepository<Customer>();
         
