@@ -1,14 +1,13 @@
-using Veda.Application.Abstract;
-
 namespace Veda.Application.SharedKernel.Exceptions;
 
-public class NotFoundException<TEntity> : DomainException where TEntity : Entity
+public class NotFoundException : DomainException
 {
-    public NotFoundException() : base(nameof(TEntity) + " not found")
+    public NotFoundException(string entityName) : base(entityName + " not found")
     {
     }
 
-    public NotFoundException(Exception? innerException) : base(nameof(TEntity) + " not found", innerException)
+    public NotFoundException(string entityName, Exception? innerException) 
+        : base(entityName + " not found", innerException)
     {
     }
 }

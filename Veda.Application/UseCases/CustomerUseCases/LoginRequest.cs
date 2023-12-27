@@ -19,7 +19,7 @@ public class LoginRequestHandler(IUnitOfWork unitOfWork, IPasswordHasher passwor
         var customer = customerRepository.GetUnique(user => user.EmailAddress == new EmailAddress(request.Email));
         if (customer == null)
         {
-            throw new NotFoundException<Customer>();
+            throw new NotFoundException(nameof(customer));
         }
 
         if (!passwordHasher.VerifyPassword(request.Password, customer.Password.Value))

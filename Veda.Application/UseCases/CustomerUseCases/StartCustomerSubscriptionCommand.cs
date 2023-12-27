@@ -21,13 +21,13 @@ public class StartCustomerSubscriptionCommandHandler(
         var customer = customerRepository.GetById(request.CustomerId);
         if (customer == null)
         {
-            throw new NotFoundException<Customer>();
+            throw new NotFoundException(nameof(customer));
         }
         
         var membershipStatus = membershipStatusRepository.GetUnique(m => m.Id == request.MembershipStatusId);
         if (membershipStatus == null)
         {
-            throw new NotFoundException<Membership>();
+            throw new NotFoundException(nameof(MembershipStatus));
         }
 
         var newMembership = Membership.Create(membershipStatus);
