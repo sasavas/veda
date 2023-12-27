@@ -6,17 +6,17 @@ using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 
-public record StartCustomerSubscriptionCommand(int CustomerId, int MembershipStatusId) : IRequest;
+public record StartCustomerSubscriptionCommand(int CustomerId, int MembershipStatusId) : IRequest<MembershipStatus>;
 
 public class StartCustomerSubscriptionCommandHandler(
     IUnitOfWork unitOfWork,
     ILogger<StartCustomerSubscriptionCommand> logger) 
-    : IRequestHandler<StartCustomerSubscriptionCommand>
+    : IRequestHandler<StartCustomerSubscriptionCommand, MembershipStatus>
 {
-    public Task Handle(StartCustomerSubscriptionCommand request, CancellationToken cancellationToken)
+    public Task<MembershipStatus> Handle(StartCustomerSubscriptionCommand request, CancellationToken cancellationToken)
     {
         var customerRepository = unitOfWork.GetRepository<Customer>();
-        var membershipRepository = unitOfWork.GetRepository<Membership>();
+        var membershipStatusRepository = unitOfWork.GetRepository<MembershipStatus>();
         
         var customer = customerRepository.GetById(request.CustomerId);
         if (customer == null)
@@ -24,19 +24,22 @@ public class StartCustomerSubscriptionCommandHandler(
             throw new NotFoundException<Customer>();
         }
         
-        var membership = membershipRepository.GetUnique(m => m.MembershipStatus.Id == request.MembershipStatusId);
-        if (membership == null)
+        var membershipStatus = membershipStatusRepository.GetUnique(m => m.Id == request.MembershipStatusId);
+        if (membershipStatus == null)
         {
             throw new NotFoundException<Membership>();
         }
-        
-        customer.AddOrChangeMembership(membership);
+
+        var newMembership = Membership.Create(membershipStatus);
+        customer.AddOrChangeMembership(newMembership);
 
         unitOfWork.BeginTransaction();
         try
         {
             customerRepository.Update(customer);
             unitOfWork.Commit();
+
+            return Task.FromResult(membershipStatus);
         }
         catch (Exception e)
         {
@@ -45,7 +48,5 @@ public class StartCustomerSubscriptionCommandHandler(
             
             throw;
         }
-        
-        return Task.CompletedTask;
     }
 }
