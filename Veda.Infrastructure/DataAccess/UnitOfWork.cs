@@ -34,5 +34,6 @@ public class UnitOfWork(VedaDbContext context) : IUnitOfWork
     public void Dispose()
     {
         context.Dispose();
+        GC.SuppressFinalize(this);
     }
 }
