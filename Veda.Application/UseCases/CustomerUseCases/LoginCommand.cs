@@ -1,23 +1,28 @@
 using MediatR;
 using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
-using Veda.Application.SharedKernel.Exceptions;
+using Veda.Application.SharedKernel.Models;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 
-public record LoginCommand(string Email, string Password) : IRequest;
+public record LoginCommand(string Email, string Password) : IRequest<Customer>;
 
-public class LoginCommandHandler(IRepository<Customer> customerRepository) : IRequestHandler<LoginCommand>
+public class LoginCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<LoginCommand, Customer>
 {
-    public Task Handle(LoginCommand request, CancellationToken cancellationToken)
+    public Task<Customer> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        //TODO encrypt password
-        var result = customerRepository.GetUnique(user =>
-                         user.EmailAddress.Equals(request.Email) && user.Password.Equals(request.Password)) 
-                     ?? throw new NotFoundException<Customer>();
-
-        //TODO generate and return JWT Token
+        var customerRepository = unitOfWork.GetRepository<Customer>();
         
-        return Task.CompletedTask;
+        //TODO encrypt password
+        var customer =
+            customerRepository.GetUnique(user =>
+                user.EmailAddress == new EmailAddress(request.Email) && user.Password == new Password(request.Password));
+
+        if (customer == null)
+        {
+            throw new ApplicationException("Cannot login with the given user credentials");
+        }
+
+        return Task.FromResult(customer);
     }
 }

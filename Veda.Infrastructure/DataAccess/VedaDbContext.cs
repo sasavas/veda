@@ -1,6 +1,7 @@
 using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Modules.RecipientModule.Models;
 
 namespace Veda.Infrastructure.DataAccess;
 
@@ -18,4 +19,5 @@ public class VedaDbContext(DbContextOptions options) : DbContext(options)
     }
 
     public DbSet<Customer> Customers = null!;
+    public DbSet<Recipient> Recipients = null!;
 }

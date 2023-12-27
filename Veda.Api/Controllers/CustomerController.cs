@@ -1,11 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Veda.Api.Abstract;
+using Veda.Api.Helpers;
 using Veda.Application.UseCases.CustomerUseCases;
 
 namespace Veda.Api.Controllers;
 
-public class CustomerController(ISender mediatr) : BaseController
+public class CustomerController(ISender mediatr, JwtProvider jwtProvider) : BaseController
 {
     [HttpPost("Register")]
     public async Task<ActionResult<RegisterCustomerResult>> RegisterCustomer(RegisterCustomerCommand registerCustomerCommand)
@@ -14,9 +15,13 @@ public class CustomerController(ISender mediatr) : BaseController
     }
     
     [HttpPost("Login")]
-    public async Task<ActionResult<bool>> Login(LoginCommand loginCommand)
+    public async Task<ActionResult<string>> Login(LoginCommand loginCommand)
     {
-        await mediatr.Send(loginCommand);
-        return true;
+        // retrieve customer
+        var customer = await mediatr.Send(loginCommand);
+
+        // generate token
+        var token = jwtProvider.Generate(customer);
+        return token;
     }
 }

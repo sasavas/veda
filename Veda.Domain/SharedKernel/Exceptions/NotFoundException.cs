@@ -2,7 +2,7 @@ using Veda.Application.Abstract;
 
 namespace Veda.Application.SharedKernel.Exceptions;
 
-public class NotFoundException<TEntity> : DomainException where TEntity : Entity, new()
+public class NotFoundException<TEntity> : DomainException where TEntity : Entity
 {
     public NotFoundException() : base(nameof(TEntity) + " not found")
     {

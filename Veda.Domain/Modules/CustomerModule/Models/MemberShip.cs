@@ -2,20 +2,20 @@ using Veda.Application.Abstract;
 
 namespace Veda.Application.Modules.CustomerModule.Models;
 
-public class MemberShip : Entity
+public class Membership : Entity
 {
-    private MemberShip(){}
+    private Membership(){}
     
     public MembershipStatus MembershipStatus { get; set; }
-
+    
     public bool Active => End == null;
-
+    
     public DateTime Start { get; set; }
     public DateTime? End { get; set; }
 
-    public static MemberShip Create(MembershipStatus status)
+    public static Membership Create(MembershipStatus status)
     {
-        return new MemberShip()
+        return new Membership()
         {
             Start = DateTime.UtcNow,
             MembershipStatus = status,

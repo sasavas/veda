@@ -25,7 +25,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             password => password.Value,
             s => new Password(s));
 
-        builder.HasMany<MemberShip>(customer => customer.Memberships)
+        builder.HasMany<Membership>(customer => customer.Memberships)
             .WithOne();
 
         builder.Property(e => e.RecipientIds)

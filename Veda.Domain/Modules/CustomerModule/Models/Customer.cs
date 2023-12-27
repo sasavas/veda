@@ -12,8 +12,8 @@ public class Customer : Entity
     public EmailAddress EmailAddress { get; set; }
     public Password Password { get; set; }
 
-    public List<MemberShip> Memberships { get; set; } = new();
-    public MemberShip ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
+    public List<Membership> Memberships { get; set; } = new();
+    public Membership? ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
 
     public static Customer Create(string firstName, string lastName, DateOnly dateOfBirth,
         TCKimlikNo tcKimlikNo, EmailAddress emailAddress, Password password)
@@ -29,7 +29,7 @@ public class Customer : Entity
         };
     }
 
-    public void AddOrChangeMembership(MemberShip memberShip)
+    public void AddOrChangeMembership(Membership memberShip)
     {
         if (Memberships.Any(m => m.Active))
         {
