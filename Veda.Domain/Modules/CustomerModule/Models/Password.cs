@@ -2,16 +2,13 @@ namespace Veda.Application.Modules.CustomerModule.Models;
 
 public class Password
 {
-    public Password(string value)
+    public static Password Create(string value)
     {
-        //TODO validate
-        
-        //TODO hash password
-        Value = value;
+        return new Password { Value = value };
     }
 
-    public string Value { get; }
-    
+    public string Value { get; private init; }
+
     public override bool Equals(object? obj)
     {
         if (obj is not Password || obj is not string)

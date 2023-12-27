@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Ports;
 using Veda.Application.SharedKernel.Models;
 using Veda.Application.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.Email;
@@ -11,14 +12,19 @@ using EmailAddress = Veda.Application.SharedKernel.Models.EmailAddress;
 namespace Veda.Application.UseCases.CustomerUseCases;
 
 public record struct RegisterCustomerCommand(
-    string FirstName, string LastName, DateOnly DateOfBirth,
-    string TcKimlikNo, string EmailAddress, string Password): IRequest<RegisterCustomerResult>;
+    string FirstName,
+    string LastName,
+    DateOnly DateOfBirth,
+    string TcKimlikNo,
+    string EmailAddress,
+    string Password) : IRequest<RegisterCustomerResult>;
 
 public record RegisterCustomerResult(Customer Customer);
 
 public class RegisterCustomerCommandHandler(
     ILogger<RegisterCustomerCommand> _logger,
     IUnitOfWork unitOfWork,
+    IPasswordHasher passwordHasher,
     IEmailService emailService,
     IHtmlService htmlService) : IRequestHandler<RegisterCustomerCommand, RegisterCustomerResult>
 {
@@ -33,7 +39,7 @@ public class RegisterCustomerCommandHandler(
                 TCKimlikNo = new TCKimlikNo(command.TcKimlikNo),
                 DateOfBirth = command.DateOfBirth,
                 EmailAddress = new EmailAddress(command.EmailAddress),
-                Password = new Password(command.Password)
+                Password = Password.Create(passwordHasher.HashPassword(command.Password))
             };
 
             //TODO send via Domain events
@@ -50,12 +56,11 @@ public class RegisterCustomerCommandHandler(
                         .Build()));
 
             unitOfWork.BeginTransaction();
-            
+
             var registeredCustomer = unitOfWork.GetRepository<Customer>().Create(customer);
             unitOfWork.Commit();
-            
-            return Task.FromResult(new RegisterCustomerResult(registeredCustomer));
 
+            return Task.FromResult(new RegisterCustomerResult(registeredCustomer));
         }
         catch (Exception e)
         {

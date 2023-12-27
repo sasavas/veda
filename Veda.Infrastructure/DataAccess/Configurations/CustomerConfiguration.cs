@@ -23,7 +23,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         //TODO! hashleme islemini dikkate almalisin ???
         builder.Property(customer => customer.Password).HasConversion(
             password => password.Value,
-            s => new Password(s));
+            s => Password.Create(s));
 
         builder.HasMany<Membership>(customer => customer.Memberships)
             .WithOne();

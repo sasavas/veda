@@ -9,12 +9,12 @@ public class CustomerTests(ITestOutputHelper testOutputHelper)
     [Fact]
     public void CustomerCanHaveOnlyOneActiveMembershipAtOnce()
     {
-        var customer = new Customer()
+        var customer = new Customer
         {
             FirstName = "Ahmet",
             LastName = "Birgili",
             TCKimlikNo = new TCKimlikNo("11111111111"),
-            Password = new Password("1111"),
+            Password = Password.Create("1111"),
             EmailAddress = new EmailAddress("metinbirgili@yahoo.com"),
         };
 

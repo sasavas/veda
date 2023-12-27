@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Veda.Application.DatabaseAccess;
+using Veda.Application.Ports;
 using Veda.Infrastructure.DataAccess;
 using Veda.Infrastructure.ServiceImplementations;
 using Veda.SharedKernel.Services.Email;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IHtmlService, HtmlService>();
         services.AddTransient<IHtmlBuilder, HtmlBuilder>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
         // ServiceProvider = services.BuildServiceProvider();
 
