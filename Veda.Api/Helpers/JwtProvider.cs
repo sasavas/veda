@@ -16,14 +16,16 @@ public class JwtProvider(IOptions<JwtConfiguration> jwtConfig)
         var key = Encoding.ASCII.GetBytes(jwtConfig.Value.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Issuer =  jwtConfig.Value.Issuer,
+            Audience = jwtConfig.Value.Audience,
             Subject = new ClaimsIdentity(new Claim[] 
             {
-                new Claim(ClaimTypes.Name, customer.TCKimlikNo.Value), // Replace with actual username
+                new Claim(ClaimTypes.NameIdentifier, customer.TCKimlikNo.Value), // Replace with actual username
                 new Claim(ClaimTypes.Email, customer.EmailAddress.Address),
                 new Claim(ClaimTypes.Role, customer.ActiveMemberShip?.MembershipStatus?.Id.ToString() ?? "")
             }),
             Expires = DateTime.UtcNow.AddHours(2), // Token expiry
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature), 
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
