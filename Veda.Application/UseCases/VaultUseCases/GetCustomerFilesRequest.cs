@@ -19,7 +19,7 @@ public class GetCustomerFilesRequestHandler(
         var folders = customer.RecipientIds
             .Select(recipientRepository.GetById)
             .Where(recipient => recipient is not null)
-            .SelectMany(recipient => recipient!.Folders);
+            .Select(recipient => recipient!.Folder);
 
         return Task.FromResult(folders);
     }

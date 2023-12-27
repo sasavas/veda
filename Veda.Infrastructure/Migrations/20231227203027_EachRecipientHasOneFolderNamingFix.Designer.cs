@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Veda.Infrastructure.DataAccess;
@@ -12,9 +13,11 @@ using Veda.Infrastructure.DataAccess;
 namespace Veda.Infrastructure.Migrations
 {
     [DbContext(typeof(VedaDbContext))]
-    partial class VedaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231227203027_EachRecipientHasOneFolderNamingFix")]
+    partial class EachRecipientHasOneFolderNamingFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,9 +163,9 @@ namespace Veda.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<long>("SizeInBytes")
-                        .HasColumnType("bigint")
-                        .HasColumnName("size_in_bytes");
+                    b.Property<double>("Size")
+                        .HasColumnType("double precision")
+                        .HasColumnName("size");
 
                     b.HasKey("Id")
                         .HasName("pk_digital_content");
@@ -198,10 +201,6 @@ namespace Veda.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_folder");
 
-                    b.HasIndex("RecipientId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_folder_recipient_id");
-
                     b.ToTable("folder", (string)null);
                 });
 
@@ -228,6 +227,10 @@ namespace Veda.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("first_name");
 
+                    b.Property<int>("FolderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("folder_id");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text")
@@ -240,6 +243,9 @@ namespace Veda.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_recipient");
+
+                    b.HasIndex("FolderId")
+                        .HasDatabaseName("ix_recipient_folder_id");
 
                     b.ToTable("recipient", (string)null);
                 });
@@ -269,18 +275,15 @@ namespace Veda.Infrastructure.Migrations
                         .HasConstraintName("fk_digital_content_folder_folder_id");
                 });
 
-            modelBuilder.Entity("Veda.Application.Modules.RecipientModule.Models.Folder", b =>
-                {
-                    b.HasOne("Veda.Application.Modules.RecipientModule.Models.Recipient", null)
-                        .WithOne("Folder")
-                        .HasForeignKey("Veda.Application.Modules.RecipientModule.Models.Folder", "RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_folder_recipient_recipient_id");
-                });
-
             modelBuilder.Entity("Veda.Application.Modules.RecipientModule.Models.Recipient", b =>
                 {
+                    b.HasOne("Veda.Application.Modules.RecipientModule.Models.Folder", "Folder")
+                        .WithMany()
+                        .HasForeignKey("FolderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_recipient_folder_folder_id");
+
                     b.OwnsOne("Veda.Application.SharedKernel.Models.PhoneNumber", "PhoneNumber", b1 =>
                         {
                             b1.Property<int>("RecipientId")
@@ -307,6 +310,8 @@ namespace Veda.Infrastructure.Migrations
                                 .HasConstraintName("fk_recipient_phone_numbers_recipient_id");
                         });
 
+                    b.Navigation("Folder");
+
                     b.Navigation("PhoneNumber")
                         .IsRequired();
                 });
@@ -319,12 +324,6 @@ namespace Veda.Infrastructure.Migrations
             modelBuilder.Entity("Veda.Application.Modules.RecipientModule.Models.Folder", b =>
                 {
                     b.Navigation("DigitalContents");
-                });
-
-            modelBuilder.Entity("Veda.Application.Modules.RecipientModule.Models.Recipient", b =>
-                {
-                    b.Navigation("Folder")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

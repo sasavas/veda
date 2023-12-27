@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Veda.Infrastructure.DataAccess;
@@ -12,9 +13,11 @@ using Veda.Infrastructure.DataAccess;
 namespace Veda.Infrastructure.Migrations
 {
     [DbContext(typeof(VedaDbContext))]
-    partial class VedaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231227203534_RecipientFolderForeignKeyDef")]
+    partial class RecipientFolderForeignKeyDef
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,9 +163,9 @@ namespace Veda.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<long>("SizeInBytes")
-                        .HasColumnType("bigint")
-                        .HasColumnName("size_in_bytes");
+                    b.Property<double>("Size")
+                        .HasColumnType("double precision")
+                        .HasColumnName("size");
 
                     b.HasKey("Id")
                         .HasName("pk_digital_content");

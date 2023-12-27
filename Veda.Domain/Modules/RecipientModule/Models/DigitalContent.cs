@@ -7,13 +7,25 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 /// </summary>
 public class DigitalContent : Entity
 {
+    private DigitalContent(){}
+    
     public string Name { get; set; }
     /// <summary>
     /// Dosyanin diskte kapladigi alan
     /// </summary>
-    public double Size { get; set; }
+    public long SizeInBytes { get; set; }
     /// <summary>
     /// Kaydedilirken Hash'i alinacak
     /// </summary>
     public string HashCode { get; set; }
+
+    public static DigitalContent Create(string name, long sizeInBytes, string fileHashCode)
+    {
+        return new DigitalContent
+        {
+            Name = name,
+            SizeInBytes = sizeInBytes,
+            HashCode = fileHashCode
+        };
+    }
 }

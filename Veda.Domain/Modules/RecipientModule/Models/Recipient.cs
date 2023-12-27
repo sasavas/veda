@@ -12,5 +12,10 @@ public class Recipient : Entity
     public EmailAddress EMailAddress { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
 
-    public List<Folder> Folders { get; set; }
+    public Folder Folder { get; set; }
+
+    public void AddContent(DigitalContent content)
+    {
+        
+    }
 }

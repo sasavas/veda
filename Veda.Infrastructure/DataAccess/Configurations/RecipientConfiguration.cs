@@ -31,8 +31,8 @@ public class RecipientConfiguration : IEntityTypeConfiguration<Recipient>
                 phoneBuilder.Property(phone => phone.Number);
             });
 
-        builder.HasMany(recipient => recipient.Folders)
+        builder.HasOne(recipient => recipient.Folder)
             .WithOne()
-            .HasForeignKey(folder => folder.RecipientId);
+            .HasForeignKey<Folder>(folder => folder.RecipientId);
     }
 }
