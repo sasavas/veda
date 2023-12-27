@@ -14,7 +14,7 @@ public class Repository<TEntity>(VedaDbContext context) : IRepository<TEntity>
     
     public TEntity? GetUnique(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().FirstOrDefault(filter);
 
-    public TEntity? GetById(int id) => Context.Set<TEntity>().First(entity => entity.Id == id);
+    public TEntity? GetById(int id) => Context.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
     
     public virtual IEnumerable<TEntity> GetList() => Context.Set<TEntity>();
     
