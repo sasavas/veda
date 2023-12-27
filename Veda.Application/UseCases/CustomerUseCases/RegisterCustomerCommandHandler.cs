@@ -1,9 +1,12 @@
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.SharedKernel.Models;
 using Veda.Application.SharedKernel.Services.Email;
-using Veda.Application.SharedKernel.Services.HtmlHelper;
+using Veda.SharedKernel.Services.Email;
+using Veda.SharedKernel.Services.HtmlHelper;
+using EmailAddress = Veda.Application.SharedKernel.Models.EmailAddress;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 
@@ -14,35 +17,52 @@ public record struct RegisterCustomerCommand(
 public record RegisterCustomerResult(Customer Customer);
 
 public class RegisterCustomerCommandHandler(
-    ICustomerRepository customerRepository,
+    ILogger<RegisterCustomerCommandHandler> _logger,
+    IUnitOfWork unitOfWork,
     IEmailService emailService,
     IHtmlService htmlService) : IRequestHandler<RegisterCustomerCommand, RegisterCustomerResult>
 {
     public Task<RegisterCustomerResult> Handle(RegisterCustomerCommand command, CancellationToken cancellationToken)
     {
-        var customer = new Customer
+
+        try
         {
-            FirstName = command.FirstName,
-            LastName = command.LastName,
-            TCKimlikNo = new TCKimlikNo(command.TcKimlikNo),
-            DateOfBirth = command.DateOfBirth,
-            EmailAddress = new EmailAddress(command.EmailAddress),
-            Password = new Password(command.Password)
-        };
+            var customer = new Customer
+            {
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                TCKimlikNo = new TCKimlikNo(command.TcKimlikNo),
+                DateOfBirth = command.DateOfBirth,
+                EmailAddress = new EmailAddress(command.EmailAddress),
+                Password = new Password(command.Password)
+            };
 
-        //TODO send via Domain events
-        emailService.SendEmail(
-            new HtmlEmailDTO(
-                customer.EmailAddress,
-                "Please verify your email address",
-                htmlService
-                    .GetHtmlBuilder()
-                    .AddTitle("Welcome to Veda!")
-                    .AddParagraph("Please verify your membership by clicking the link following link")
-                    .AddLink("")
-                    .Build()));
+            //TODO send via Domain events
+            emailService.SendEmail(
+                new HtmlEmailDTO(
+                    new Veda.SharedKernel.Services.Email.EmailAddress(customer.EmailAddress.Address),
+                    "Please verify your email address",
+                    htmlService
+                        .GetHtmlBuilder()
+                        .AddTitle("Welcome to Veda!")
+                        .AddParagraph("Please verify your membership by clicking the following link")
+                        .AddParagraph("If you were not expecting this email, please ignore")
+                        .AddLink("www.google.com") //TODO: link to provide user to go to and verify registration
+                        .Build()));
 
-        var registeredCustomer = customerRepository.Create(customer);
-        return Task.FromResult(new RegisterCustomerResult(registeredCustomer));
+            unitOfWork.BeginTransaction();
+            
+            var registeredCustomer = unitOfWork.GetRepository<Customer>().Create(customer);
+            unitOfWork.Commit();
+            
+            return Task.FromResult(new RegisterCustomerResult(registeredCustomer));
+
+        }
+        catch (Exception e)
+        {
+            unitOfWork.Rollback();
+            _logger.Log(LogLevel.Error, e, "Customer could not be created");
+            throw;
+        }
     }
 }

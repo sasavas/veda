@@ -1,16 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Veda.Application.DatabaseAccess;
 using Veda.Infrastructure.DataAccess;
+using Veda.Infrastructure.ServiceImplementations;
+using Veda.SharedKernel.Services.Email;
+using Veda.SharedKernel.Services.HtmlHelper;
+
 
 namespace Veda.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceProvider ServiceProvider;
+    // public static IServiceProvider ServiceProvider = null!;
 
     public static IServiceCollection AddInfrastructureDependencies(
         this IServiceCollection services)
     {
+        // Database Infrastructure
         services.AddDbContext<VedaDbContext>(
             options =>
             {
@@ -21,10 +27,15 @@ public static class DependencyInjection
                 //TODO: add connectionString via config later
             });
 
-        //TODO: register Repositories
-        //services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
+        // Other Infrastructure Services
+        services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IHtmlService, HtmlService>();
+        services.AddTransient<IHtmlBuilder, HtmlBuilder>();
 
-        ServiceProvider = services.BuildServiceProvider();
+        // ServiceProvider = services.BuildServiceProvider();
 
         return services;
     }

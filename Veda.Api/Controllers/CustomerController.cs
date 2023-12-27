@@ -7,9 +7,16 @@ namespace Veda.Api.Controllers;
 
 public class CustomerController(ISender mediatr) : BaseController
 {
-    [HttpPost]
+    [HttpPost("Register")]
     public async Task<ActionResult<RegisterCustomerResult>> RegisterCustomer(RegisterCustomerCommand registerCustomerCommand)
     {
         return Ok(await mediatr.Send(registerCustomerCommand));
+    }
+    
+    [HttpPost("Login")]
+    public async Task<ActionResult<bool>> Login(LoginCommand loginCommand)
+    {
+        await mediatr.Send(loginCommand);
+        return true;
     }
 }

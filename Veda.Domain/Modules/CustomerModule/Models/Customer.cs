@@ -40,5 +40,5 @@ public class Customer : Entity
         Memberships.Add(memberShip);
     }
 
-    public ICollection<int> RecipientIds { get; set; }
+    public List<int> RecipientIds { get; set; } = new List<int>();
 }

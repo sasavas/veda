@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Veda.Api.Configurations;
 using Veda.Api.MiddleWares;
+using Veda.Application;
 using Veda.Infrastructure;
 using Veda.Infrastructure.DataAccess;
 
@@ -41,11 +41,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddInfrastructureDependencies();
+builder.Services.AddApplicationDependencies();
 
 builder.Services.AddScoped<ApiEndpointHitLoggerMiddleware>();
 builder.Services.AddScoped<ExceptionMiddleware>();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {

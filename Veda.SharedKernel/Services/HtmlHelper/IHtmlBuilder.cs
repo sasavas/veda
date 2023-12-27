@@ -1,10 +1,4 @@
-namespace Veda.Application.SharedKernel.Services.HtmlHelper;
-
-public interface IHtmlService
-{
-    IHtmlBuilder GetHtmlBuilder();
-}
-
+namespace Veda.SharedKernel.Services.HtmlHelper;
 
 public interface IHtmlBuilder
 {

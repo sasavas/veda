@@ -1,4 +1,4 @@
-using Veda.Application.SharedKernel.Models;
+using Veda.SharedKernel.Services.Email;
 
 namespace Veda.Application.SharedKernel.Services.Email;
 

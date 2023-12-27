@@ -7,7 +7,7 @@ namespace Veda.Application.UseCases.CustomerUseCases;
 
 public record LoginCommand(string Email, string Password) : IRequest;
 
-public class LoginCommandHandler(ICustomerRepository customerRepository) : IRequestHandler<LoginCommand>
+public class LoginCommandHandler(IRepository<Customer> customerRepository) : IRequestHandler<LoginCommand>
 {
     public Task Handle(LoginCommand request, CancellationToken cancellationToken)
     {

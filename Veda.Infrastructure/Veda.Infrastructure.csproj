@@ -25,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Veda.Application\Veda.Application.csproj" />
       <ProjectReference Include="..\Veda.Domain\Veda.Domain.csproj" />
+      <ProjectReference Include="..\Veda.SharedKernel\Veda.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

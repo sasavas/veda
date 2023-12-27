@@ -3,7 +3,7 @@ using Veda.Application.Abstract;
 
 namespace Veda.Application.DatabaseAccess;
 
-public interface IBaseRepository<TAggregateRoot> 
+public interface IRepository<TAggregateRoot> 
     where TAggregateRoot : Entity
 {
     TAggregateRoot? GetById(int id);

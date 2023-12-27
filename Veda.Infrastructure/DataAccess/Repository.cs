@@ -4,14 +4,11 @@ using Veda.Application.DatabaseAccess;
 
 namespace Veda.Infrastructure.DataAccess;
 
-public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : Entity
+public class Repository<TEntity>(VedaDbContext context) : IRepository<TEntity>
+    where TEntity : Entity
 {
-    protected readonly VedaDbContext Context;
-
-    protected BaseRepository(VedaDbContext context)
-    {
-        Context = context;
-    }
+    // ReSharper disable once MemberCanBePrivate.Global
+    protected readonly VedaDbContext Context = context;
 
     public IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().Where(filter);
     
@@ -24,14 +21,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public virtual TEntity Create(TEntity aggregateRoot)
     {
         var inserted = Context.Set<TEntity>().Add(aggregateRoot);
-        Context.SaveChanges();
         return inserted.Entity;
     }
 
     public virtual TEntity Update(TEntity entity)
     {
         var updated = Context.Set<TEntity>().Update(entity);
-        Context.SaveChanges();
         return updated.Entity;
     }
     

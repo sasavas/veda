@@ -1,6 +1,5 @@
+using Veda.Application.Modules.CustomerModule.Models;
+
 namespace Veda.Application.DatabaseAccess;
 
-public interface IMembershipRepository
-{
-    
-}
+public interface IMembershipRepository : IRepository<MemberShip>;
