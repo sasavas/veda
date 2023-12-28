@@ -1,6 +1,4 @@
-using Veda.SharedKernel.Services.Email;
-
-namespace Veda.Application.SharedKernel.Services.Email;
+namespace Veda.SharedKernel.Services.Email;
 
 public abstract class EmailDTO
 {
@@ -12,14 +10,16 @@ public abstract class EmailDTO
 
     public EmailAddress To { get; set; }
     public string Title { get; set; }
+    
+    public abstract string Body { get; }
 }
 
 public class HtmlEmailDTO : EmailDTO
 {
-    public string Content { get; set; }
+    public override string Body { get; }
 
     public HtmlEmailDTO(EmailAddress to, string title, string content) : base(to, title)
     {
-        Content = content;
+        Body = content;
     }
 }

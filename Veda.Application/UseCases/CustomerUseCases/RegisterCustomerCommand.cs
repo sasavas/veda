@@ -4,7 +4,6 @@ using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Ports;
 using Veda.Application.SharedKernel.Models;
-using Veda.Application.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.HtmlHelper;
 using EmailAddress = Veda.Application.SharedKernel.Models.EmailAddress;
