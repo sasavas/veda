@@ -1,12 +1,14 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Veda.Application.DatabaseAccess;
+using Veda.Application.DomainServices;
+using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.VaultUseCases;
 
-public record AddDigitalContentCommand(int customerId, int recipientId, string fileName, Stream fileStream) : IRequest;
+public record AddDigitalContentCommand(int recipientId, string fileName, Stream fileStream) : IRequest;
 
 public class AddDigitalContentCommandHandler(
     IUnitOfWork unitOfWork,
@@ -15,27 +17,37 @@ public class AddDigitalContentCommandHandler(
 {
     public Task Handle(AddDigitalContentCommand command, CancellationToken cancellationToken)
     {
+        var customerRepository = unitOfWork.GetRepository<Customer>();
         var recipientRepository = unitOfWork.GetRepository<Recipient>();
 
-        var recipient = recipientRepository.GetById(command.recipientId)
-                        ?? throw new NotFoundException(nameof(Recipient));
+        var recipient = recipientRepository.GetById(command.recipientId) ?? throw new NotFoundException(nameof(Recipient));
+        var customer = customerRepository.GetById(recipient.CustomerId) ?? throw new NotFoundException(nameof(Customer));
         
-        //TODO generate hash code of the file
-        var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo;
         //TODO calculate the actual length when saved to File Storage (in bytes, of course)
         var size = command.fileStream.Length;
 
+        var (canAdd, message) = DigitalContentService.CanAddDigitalContent(customer, size);
+        if (canAdd == false)
+        {
+            throw new DomainException(message);
+        }
+        
+        //TODO generate hash code of the file
+        var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo;
+
+        recipient.Folder.AddContent(DigitalContent.Create(command.fileName, size, hashcode));
+        
         try
         {
             unitOfWork.BeginTransaction();
 
-            recipient.Folder.AddContent(DigitalContent.Create(command.fileName, size, hashcode));
+            recipientRepository.Update(recipient);
 
             unitOfWork.Commit();
         }
         catch (Exception e)
         {
-            logger.Log(LogLevel.Error, "Could not add digital content to the recipient's folder");
+            logger.Log(LogLevel.Error, e, "Could not add digital content to the recipient's folder");
             unitOfWork.Rollback();
             throw;
         }

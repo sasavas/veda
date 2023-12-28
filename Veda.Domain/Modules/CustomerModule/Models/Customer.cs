@@ -48,6 +48,16 @@ public class Customer : Entity
         return activeMembership.MembershipStatus.RecipientLimit == Recipients.Count;
     }
 
+    public long GetTotalStorageUsed()
+    {
+        var currentTotalSize = Recipients
+            .Select(r => r.Folder)
+            .SelectMany(f => f.DigitalContents)
+            .Sum(d => d.SizeInBytes);
+
+        return currentTotalSize;
+    }
+
     public void AddOrChangeMembership(Membership memberShip)
     {
         if (Memberships.Any(m => m.Active))

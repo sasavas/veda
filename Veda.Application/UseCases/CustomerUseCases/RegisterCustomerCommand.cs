@@ -33,15 +33,13 @@ public class RegisterCustomerCommandHandler(
     {
         try
         {
-            var customer = new Customer
-            {
-                FirstName = command.FirstName,
-                LastName = command.LastName,
-                TCKimlikNo = new TCKimlikNo(command.TcKimlikNo),
-                DateOfBirth = command.DateOfBirth,
-                EmailAddress = new EmailAddress(command.EmailAddress),
-                Password = Password.Create(passwordHasher.HashPassword(command.Password)),
-            };
+            var customer = Customer.Create(
+                command.FirstName,
+                command.LastName,
+                command.DateOfBirth,
+                new TCKimlikNo(command.TcKimlikNo),
+                new EmailAddress(command.EmailAddress),
+                Password.Create(passwordHasher.HashPassword(command.Password)));
 
             if (command.PhoneNumber != null)
             {
