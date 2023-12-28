@@ -13,10 +13,12 @@ namespace Veda.Application.UseCases.CustomerUseCases;
 public record struct RegisterCustomerCommand(
     string FirstName,
     string LastName,
-    DateOnly DateOfBirth,
     string TcKimlikNo,
     string EmailAddress,
-    string Password) : IRequest<RegisterCustomerResult>;
+    string Password,
+    DateOnly DateOfBirth,
+    PhoneNumber? PhoneNumber
+    ) : IRequest<RegisterCustomerResult>;
 
 public record RegisterCustomerResult(Customer Customer);
 
@@ -38,8 +40,13 @@ public class RegisterCustomerCommandHandler(
                 TCKimlikNo = new TCKimlikNo(command.TcKimlikNo),
                 DateOfBirth = command.DateOfBirth,
                 EmailAddress = new EmailAddress(command.EmailAddress),
-                Password = Password.Create(passwordHasher.HashPassword(command.Password))
+                Password = Password.Create(passwordHasher.HashPassword(command.Password)),
             };
+
+            if (command.PhoneNumber != null)
+            {
+                customer.PhoneNumber = command.PhoneNumber;
+            }
 
             //TODO send via Domain events
             emailService.SendEmail(

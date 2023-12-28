@@ -11,7 +11,7 @@ public class Customer : Entity
     public DateOnly DateOfBirth { get; set; }
     public TCKimlikNo TCKimlikNo { get; set; }
     public EmailAddress EmailAddress { get; set; }
-    public PhoneNumber PhoneNumber { get; set; }
+    public PhoneNumber? PhoneNumber { get; set; }
     public Password Password { get; set; }
 
     public List<Membership> Memberships { get; set; } = new();
