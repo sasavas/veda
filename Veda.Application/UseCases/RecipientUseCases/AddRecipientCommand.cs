@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Veda.Application.DatabaseAccess;
+using Veda.Application.Modules.CustomerModule.Exceptions;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Exceptions;
@@ -24,8 +25,14 @@ public class AddRecipientCommandHandler(
 {
     public Task<Recipient> Handle(AddRecipientCommand request, CancellationToken cancellationToken)
     {
-        var _ = unitOfWork.GetRepository<Customer>().GetById(request.CustomerId) 
+        var customer = unitOfWork.GetRepository<Customer>().GetById(request.CustomerId) 
                 ?? throw new NotFoundException(nameof(Customer));
+
+        if (customer.IsMaxRecipientCapacityReached())
+        {
+            throw new CustomerHasReachedRecipientLimit(
+                "Customer cannot have more Recipients within the limit of current membership");
+        }
         
         var recipient = Recipient.Create(
             request.CustomerId, request.FirstName, request.LastName, request.TcKimlikNo, request.EmailAddress,

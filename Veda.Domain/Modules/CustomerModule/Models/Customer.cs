@@ -1,4 +1,5 @@
 using Veda.Application.Abstract;
+using Veda.Application.Modules.CustomerModule.Exceptions;
 using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Models;
 
@@ -33,6 +34,18 @@ public class Customer : Entity
         };
     }
 
+    public bool IsMaxRecipientCapacityReached()
+    {
+        var activeMembership = ActiveMemberShip;
+        
+        if(activeMembership is null)
+        {
+            throw new CustomerDoesNotHaveActiveMembership("Customer does not have an active membership");
+        }
+
+        return activeMembership.MembershipStatus.RecipientLimit == Recipients.Count;
+    }
+
     public void AddOrChangeMembership(Membership memberShip)
     {
         if (Memberships.Any(m => m.Active))
@@ -43,6 +56,4 @@ public class Customer : Entity
 
         Memberships.Add(memberShip);
     }
-
-    // public List<int> RecipientIds { get; set; } = new List<int>();
 }
