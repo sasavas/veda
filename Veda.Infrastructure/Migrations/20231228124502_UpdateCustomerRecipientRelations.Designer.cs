@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Veda.Infrastructure.DataAccess;
@@ -11,9 +12,11 @@ using Veda.Infrastructure.DataAccess;
 namespace Veda.Infrastructure.Migrations
 {
     [DbContext(typeof(VedaDbContext))]
-    partial class VedaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228124502_UpdateCustomerRecipientRelations")]
+    partial class UpdateCustomerRecipientRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,37 +246,6 @@ namespace Veda.Infrastructure.Migrations
                         .HasDatabaseName("ix_recipient_customer_id");
 
                     b.ToTable("recipient", (string)null);
-                });
-
-            modelBuilder.Entity("Veda.Application.Modules.CustomerModule.Models.Customer", b =>
-                {
-                    b.OwnsOne("Veda.Application.SharedKernel.Models.PhoneNumber", "PhoneNumber", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .HasColumnType("integer")
-                                .HasColumnName("customer_id");
-
-                            b1.Property<string>("CountryCode")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("country_code");
-
-                            b1.Property<long>("Number")
-                                .HasColumnType("bigint")
-                                .HasColumnName("number");
-
-                            b1.HasKey("CustomerId")
-                                .HasName("pk_customer_phone_numbers");
-
-                            b1.ToTable("customer_phone_numbers", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId")
-                                .HasConstraintName("fk_customer_phone_numbers_customer_customer_id");
-                        });
-
-                    b.Navigation("PhoneNumber")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Veda.Application.Modules.CustomerModule.Models.Membership", b =>

@@ -24,25 +24,21 @@ public class AddRecipientComandHandler(
 {
     public Task<Recipient> Handle(AddRecipientCommand request, CancellationToken cancellationToken)
     {
-        var customerRepository = unitOfWork.GetRepository<Customer>();
-        var recipientRepository = unitOfWork.GetRepository<Recipient>();
-
+        var _ = unitOfWork.GetRepository<Customer>().GetById(request.CustomerId) 
+                ?? throw new NotFoundException(nameof(Customer));
+        
         var recipient = Recipient.Create(
-            request.FirstName, request.LastName, request.TcKimlikNo, request.EmailAddress,
+            request.CustomerId, request.FirstName, request.LastName, request.TcKimlikNo, request.EmailAddress,
             request.PhoneNumberCountryCode, request.PhoneNumber, request.DateOfBirth);
-
-        var customer = customerRepository.GetById(request.CustomerId) 
-                       ?? throw new NotFoundException(nameof(Customer));
-
+        
         unitOfWork.BeginTransaction();
         try
         {
-            var createdRecipient = recipientRepository.Create(recipient);
-            customer.RecipientIds.Add(createdRecipient.Id);
+            var createdRecipient = unitOfWork.GetRepository<Recipient>().Create(recipient);
 
             unitOfWork.Commit();
 
-            return Task.FromResult(recipient);
+            return Task.FromResult(createdRecipient);
         }
         catch (Exception e)
         {

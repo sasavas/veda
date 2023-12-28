@@ -1,4 +1,5 @@
 using Veda.Application.Abstract;
+using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Models;
 
 namespace Veda.Application.Modules.CustomerModule.Models;
@@ -10,10 +11,13 @@ public class Customer : Entity
     public DateOnly DateOfBirth { get; set; }
     public TCKimlikNo TCKimlikNo { get; set; }
     public EmailAddress EmailAddress { get; set; }
+    public PhoneNumber PhoneNumber { get; set; }
     public Password Password { get; set; }
 
     public List<Membership> Memberships { get; set; } = new();
     public Membership? ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
+
+    public virtual ICollection<Recipient> Recipients { get; private set; } = new List<Recipient>();
 
     public static Customer Create(string firstName, string lastName, DateOnly dateOfBirth,
         TCKimlikNo tcKimlikNo, EmailAddress emailAddress, Password password)
@@ -40,5 +44,5 @@ public class Customer : Entity
         Memberships.Add(memberShip);
     }
 
-    public List<int> RecipientIds { get; set; } = new List<int>();
+    // public List<int> RecipientIds { get; set; } = new List<int>();
 }

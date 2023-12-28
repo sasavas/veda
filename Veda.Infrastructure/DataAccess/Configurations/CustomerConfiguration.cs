@@ -20,15 +20,20 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             emailAddress => emailAddress.Address,
             address => new EmailAddress(address));
 
-        //TODO! hashleme islemini dikkate almalisin ???
         builder.Property(customer => customer.Password).HasConversion(
             password => password.Value,
             s => Password.Create(s));
+        
+        builder.OwnsOne<PhoneNumber>(
+            customer => customer.PhoneNumber,
+            phoneBuilder =>
+            {
+                phoneBuilder.ToTable("customer_phone_numbers");
+                phoneBuilder.Property(phone => phone.CountryCode);
+                phoneBuilder.Property(phone => phone.Number);
+            });
 
         builder.HasMany<Membership>(customer => customer.Memberships)
             .WithOne();
-
-        builder.Property(e => e.RecipientIds)
-            .HasColumnType("integer[]");
     }
 }

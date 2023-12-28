@@ -11,6 +11,7 @@ public class Recipient : Entity
     {
     }
 
+    public int CustomerId { get; private set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateOnly DateOfBirth { get; set; }
@@ -20,9 +21,10 @@ public class Recipient : Entity
 
     public Folder Folder { get; set; }
 
-    public static Recipient Create(string firstName, string lastName, string tcKimlikNo, string emailAddress,
+    public static Recipient Create(int customerId, string firstName, string lastName, string tcKimlikNo, string emailAddress,
         string phoneNumberCountryCode, long phoneNumber, DateOnly dateOfBirth)
     {
+        Guard.For(customerId, nameof(customerId)).AgainstNull();
         Guard.For(firstName, nameof(firstName)).AgainstNull();
         Guard.For(lastName, nameof(lastName)).AgainstNull();
 

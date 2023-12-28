@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.SharedKernel.Models;
 
@@ -34,5 +35,11 @@ public class RecipientConfiguration : IEntityTypeConfiguration<Recipient>
         builder.HasOne(recipient => recipient.Folder)
             .WithOne()
             .HasForeignKey<Folder>(folder => folder.RecipientId);
+
+        builder.HasOne<Customer>()
+            .WithMany(customer => customer.Recipients)
+            .HasForeignKey(recipient => recipient.CustomerId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

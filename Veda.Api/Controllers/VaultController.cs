@@ -6,12 +6,18 @@ using Veda.Application.UseCases.VaultUseCases;
 
 namespace Veda.Api.Controllers;
 
-public class VaultController(IMediator mediator) : BaseController
+public class VaultController(ISender mediator) : BaseController
 {
     [HttpGet("{customerId:int}")]
     public async Task<ActionResult<IEnumerable<Folder>>> GetAllCustomerContent(int customerId)
     {
         var folders = await mediator.Send(new GetCustomerFilesRequest(customerId));
         return Ok(folders);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddDigitalContent(AddDigitalContentCommand command)
+    {
+        return Ok();
     }
 }

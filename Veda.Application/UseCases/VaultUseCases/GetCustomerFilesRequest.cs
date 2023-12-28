@@ -16,7 +16,8 @@ public class GetCustomerFilesRequestHandler(
     public Task<IEnumerable<Folder>> Handle(GetCustomerFilesRequest request, CancellationToken cancellationToken)
     {
         var customer = customerRepository.GetById(request.CustomerId) ?? throw new NotFoundException(nameof(Customer));
-        var folders = customer.RecipientIds
+        var folders = customer.Recipients
+            .Select(recipient => recipient.Id)
             .Select(recipientRepository.GetById)
             .Where(recipient => recipient is not null)
             .Select(recipient => recipient!.Folder);
