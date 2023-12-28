@@ -9,11 +9,13 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 public class Folder : Entity
 {
     public int RecipientId { get; private set; }
-    public List<DigitalContent> DigitalContents { get; set; } = new();
+    public virtual ICollection<DigitalContent> DigitalContents { get; private set; } = new List<DigitalContent>();
     public string FolderName { get; set; }
     public double SizeOccupied { get; private set; }
-    
-    private Folder(){}
+
+    protected Folder()
+    {
+    }
 
     public static Folder Create(string name)
     {

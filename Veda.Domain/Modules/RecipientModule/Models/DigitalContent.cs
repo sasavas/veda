@@ -7,7 +7,7 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 /// </summary>
 public class DigitalContent : Entity
 {
-    private DigitalContent(){}
+    protected DigitalContent(){}
     
     public string Name { get; set; }
     /// <summary>

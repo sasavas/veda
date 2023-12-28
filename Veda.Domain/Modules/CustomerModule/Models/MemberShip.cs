@@ -4,9 +4,9 @@ namespace Veda.Application.Modules.CustomerModule.Models;
 
 public class Membership : Entity
 {
-    private Membership(){}
+    protected Membership(){}
     
-    public MembershipStatus MembershipStatus { get; set; }
+    public virtual MembershipStatus MembershipStatus { get; set; }
     
     public bool Active => End == null;
     

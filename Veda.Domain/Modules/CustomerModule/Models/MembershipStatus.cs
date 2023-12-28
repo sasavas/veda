@@ -4,7 +4,7 @@ namespace Veda.Application.Modules.CustomerModule.Models;
 
 public class MembershipStatus : Entity
 {
-    private MembershipStatus()
+    protected MembershipStatus()
     {
     }
 

@@ -7,6 +7,8 @@ namespace Veda.Application.Modules.CustomerModule.Models;
 
 public class Customer : Entity
 {
+    protected Customer(){}
+    
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateOnly DateOfBirth { get; set; }
@@ -15,7 +17,7 @@ public class Customer : Entity
     public PhoneNumber? PhoneNumber { get; set; }
     public Password Password { get; set; }
 
-    public List<Membership> Memberships { get; set; } = new();
+    public virtual ICollection<Membership> Memberships { get; set; } = new List<Membership>();
     public Membership? ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
 
     public virtual ICollection<Recipient> Recipients { get; private set; } = new List<Recipient>();

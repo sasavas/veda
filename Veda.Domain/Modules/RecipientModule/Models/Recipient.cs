@@ -6,7 +6,7 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 
 public class Recipient : Entity
 {
-    private Recipient()
+    protected Recipient()
     {
     }
 
@@ -18,7 +18,7 @@ public class Recipient : Entity
     public EmailAddress EMailAddress { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
 
-    public Folder Folder { get; set; }
+    public virtual Folder Folder { get; set; }
 
     public static Recipient Create(int customerId, string firstName, string lastName, string tcKimlikNo, string emailAddress,
         string phoneNumberCountryCode, long phoneNumber, DateOnly dateOfBirth)
