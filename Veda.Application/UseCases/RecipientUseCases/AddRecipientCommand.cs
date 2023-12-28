@@ -17,9 +17,9 @@ public record AddRecipientCommand(
     long PhoneNumber,
     DateOnly DateOfBirth) : IRequest<Recipient>;
 
-public class AddRecipientComandHandler(
+public class AddRecipientCommandHandler(
     IUnitOfWork unitOfWork,
-    ILogger<AddRecipientComandHandler> logger)
+    ILogger<AddRecipientCommandHandler> logger)
     : IRequestHandler<AddRecipientCommand, Recipient>
 {
     public Task<Recipient> Handle(AddRecipientCommand request, CancellationToken cancellationToken)

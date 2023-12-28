@@ -1,4 +1,3 @@
-using System.Runtime.Versioning;
 using Veda.Application.Abstract;
 using Veda.Application.SharedKernel.Helpers;
 using Veda.Application.SharedKernel.Models;
@@ -29,8 +28,9 @@ public class Recipient : Entity
         Guard.For(lastName, nameof(lastName)).AgainstNull();
 
         var uniqueFolderName = $"{firstName.ToUpper()[0]}{lastName.ToUpper()[0]}_{Guid.NewGuid().ToString()}";
-        return new Recipient()
+        return new Recipient
         {
+            CustomerId = customerId,
             FirstName = firstName,
             LastName = lastName,
             TCKimlikNo = new TCKimlikNo(tcKimlikNo),

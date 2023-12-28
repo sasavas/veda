@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Veda.Api.Abstract;
 using Veda.Api.Helpers;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Modules.RecipientModule.Models;
 using Veda.Application.UseCases.CustomerUseCases;
 
 namespace Veda.Api.Controllers;
@@ -41,6 +42,13 @@ public class CustomerController(ISender mediatr, JwtProvider jwtProvider) : Base
 
         var membershipStatus = await mediatr.Send(command);
         return Ok(membershipStatus);
+    }
+
+    [HttpGet("{customerId:int}/Recipients")]
+    public async Task<ActionResult<IEnumerable<Recipient>>> GetRecipients(int customerId)
+    {
+        var recipients = await mediatr.Send(new GetRecipientsRequest(customerId));
+        return Ok(recipients);
     }
     
     [HttpGet("AuthorizationTest/{test}")]
