@@ -1,7 +1,9 @@
+using Veda.Application.Abstract;
+
 namespace Veda.Application.SharedKernel.Models;
 
-public class PhoneNumber(string countryCode, string number)
+public class PhoneNumber(string countryCode, long number) : ValueObject
 {
     public string CountryCode { get; } = countryCode;
-    public string Number { get; } = number;
+    public long Number { get; } = number;
 }

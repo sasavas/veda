@@ -8,9 +8,23 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 /// </summary>
 public class Folder : Entity
 {
-    public List<DigitalContent> DigitalContents { get; set; }
+    public int RecipientId { get; private set; }
+    public List<DigitalContent> DigitalContents { get; set; } = new();
     public string FolderName { get; set; }
-    public double SizeOccupied { get; set; }
+    public double SizeOccupied { get; private set; }
     
-    public int RecipientId { get; set; }
+    private Folder(){}
+
+    public static Folder Create(string name)
+    {
+        return new Folder
+        {
+            FolderName = name,
+        };
+    }
+    
+    public void AddContent(DigitalContent content)
+    {
+        DigitalContents.Add(content);
+    }
 }

@@ -29,7 +29,7 @@ public class AddDigitalContentCommandHandler(
         {
             unitOfWork.BeginTransaction();
 
-            recipient.AddContent(DigitalContent.Create(command.fileName, size, hashcode));
+            recipient.Folder.AddContent(DigitalContent.Create(command.fileName, size, hashcode));
 
             unitOfWork.Commit();
         }

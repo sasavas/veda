@@ -1,6 +1,8 @@
+using Veda.Application.Abstract;
+
 namespace Veda.Application.Modules.CustomerModule.Models;
 
-public class Password
+public class Password : ValueObject
 {
     public static Password Create(string value)
     {
