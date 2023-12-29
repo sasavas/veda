@@ -8,7 +8,6 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 public class DigitalContent : Entity
 {
     protected DigitalContent(){}
-    
     public string Name { get; set; }
     /// <summary>
     /// Dosyanin diskte kapladigi alan
@@ -18,14 +17,22 @@ public class DigitalContent : Entity
     /// Kaydedilirken Hash'i alinacak
     /// </summary>
     public string HashCode { get; set; }
+    public DateTime UploadDate { get; set; }
+    public DateTime? DeletionDate { get; set; }
 
-    public static DigitalContent Create(string name, long sizeInBytes, string fileHashCode)
+    public static DigitalContent Create(string name, long sizeInBytes, string fileHashCode, DateTime uploadDate)
     {
         return new DigitalContent
         {
             Name = name,
             SizeInBytes = sizeInBytes,
-            HashCode = fileHashCode
+            HashCode = fileHashCode,
+            UploadDate = uploadDate,
         };
+    }
+
+    public void MarkAsDeleted(DateTime deletionDate)
+    {
+        DeletionDate = deletionDate;
     }
 }

@@ -40,4 +40,16 @@ public class Recipient : Entity
             Folder = Folder.Create(uniqueFolderName)
         };
     }
+        
+    public void AddContent(DigitalContent content)
+    {
+        Folder.AddContent(content);
+    }
+
+    public void DeleteContent(DigitalContent content, DateTime deletionTime)
+    {
+        Folder.RemoveContent(content, deletionTime);
+    }
+
+    public long TotalCapacityOccupied() => Folder.DigitalContents.Sum(content => content.SizeInBytes);
 }

@@ -1,4 +1,5 @@
 using Veda.Application.Abstract;
+using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.Modules.RecipientModule.Models;
 
@@ -9,7 +10,10 @@ namespace Veda.Application.Modules.RecipientModule.Models;
 public class Folder : Entity
 {
     public int RecipientId { get; private set; }
-    public virtual ICollection<DigitalContent> DigitalContents { get; private set; } = new List<DigitalContent>();
+
+    private readonly ICollection<DigitalContent> _digitalContents = new List<DigitalContent>();
+    public virtual IReadOnlyCollection<DigitalContent> DigitalContents => new List<DigitalContent>(_digitalContents);
+    
     public string FolderName { get; set; }
     public double SizeOccupied { get; private set; }
 
@@ -24,9 +28,19 @@ public class Folder : Entity
             FolderName = name,
         };
     }
-    
+
     public void AddContent(DigitalContent content)
     {
-        DigitalContents.Add(content);
+        _digitalContents.Add(content);
+    }
+    
+    public void RemoveContent(DigitalContent content, DateTime deletionTime)
+    {
+        if (!_digitalContents.Contains(content))
+        {
+            throw new DomainException("This folder does not contain any such content");
+        }
+        
+        content.MarkAsDeleted(deletionTime);
     }
 }
