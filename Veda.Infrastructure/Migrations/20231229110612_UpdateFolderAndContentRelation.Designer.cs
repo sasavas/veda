@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Veda.Infrastructure.DataAccess;
@@ -11,9 +12,11 @@ using Veda.Infrastructure.DataAccess;
 namespace Veda.Infrastructure.Migrations
 {
     [DbContext(typeof(VedaDbContext))]
-    partial class VedaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231229110612_UpdateFolderAndContentRelation")]
+    partial class UpdateFolderAndContentRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +146,7 @@ namespace Veda.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DeletionDate")
+                    b.Property<DateTime>("DeletionDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deletion_date");
 
