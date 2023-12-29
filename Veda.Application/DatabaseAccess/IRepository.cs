@@ -3,20 +3,20 @@ using Veda.Application.Abstract;
 
 namespace Veda.Application.DatabaseAccess;
 
-public interface IRepository<TAggregateRoot> 
-    where TAggregateRoot : Entity
+public interface IRepository<TEntity> 
+    where TEntity : Entity
 {
-    TAggregateRoot? GetById(int id);
+    TEntity? GetById(int id);
 
-    IEnumerable<TAggregateRoot> GetList();
+    IEnumerable<TEntity> GetAll();
     
-    IEnumerable<TAggregateRoot> GetList(Expression<Func<TAggregateRoot, bool>> filter);
+    IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter);
+    
+    TEntity? GetUnique(Expression<Func<TEntity, bool>> filter);
 
-    TAggregateRoot? GetUnique(Expression<Func<TAggregateRoot, bool>> filter);
+    TEntity Create(TEntity entity);
 
-    TAggregateRoot Create(TAggregateRoot entity);
-
-    TAggregateRoot Update(TAggregateRoot entity);
+    TEntity Update(TEntity entity);
 
     void Delete(int entityId);
 }

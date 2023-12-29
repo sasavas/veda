@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Veda.Application.DatabaseAccess;
 using Veda.Application.Ports;
 using Veda.Infrastructure.DataAccess;
+using Veda.Infrastructure.DataAccess.RepositoryAdapters;
 using Veda.Infrastructure.ServiceImplementations;
 using Veda.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.HtmlHelper;
@@ -28,8 +29,10 @@ public static class DependencyInjection
                 //TODO: add connectionString via config later
             });
 
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IRecipientRepository, RecipientRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         
         // Other Infrastructure Services
         services.AddTransient<IEmailService, EmailService>();
