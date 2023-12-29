@@ -14,7 +14,7 @@ public class GetMembershipStatusesRequestHandler(IUnitOfWork unitOfWork)
         CancellationToken cancellationToken)
     {
         return Task.FromResult(
-            unitOfWork.GetRepository<MembershipStatus>().GetList()
+            unitOfWork.GetRepository<MembershipStatus>().GetAll()
         );
     }
 }

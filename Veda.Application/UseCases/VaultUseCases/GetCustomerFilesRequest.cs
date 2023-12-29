@@ -6,22 +6,20 @@ using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.VaultUseCases;
 
-public record GetCustomerFilesRequest(int CustomerId) : IRequest<IEnumerable<Folder>>;
+public record GetCustomerFilesRequest(int CustomerId) : IRequest<IEnumerable<DigitalContent>>;
 
 public class GetCustomerFilesRequestHandler(
-    IRepository<Customer> customerRepository,
-    IRepository<Recipient> recipientRepository)
-    : IRequestHandler<GetCustomerFilesRequest, IEnumerable<Folder>>
+    ICustomerRepository customerRepository)
+    : IRequestHandler<GetCustomerFilesRequest, IEnumerable<DigitalContent>>
 {
-    public Task<IEnumerable<Folder>> Handle(GetCustomerFilesRequest request, CancellationToken cancellationToken)
+    public Task<IEnumerable<DigitalContent>> Handle(GetCustomerFilesRequest request, CancellationToken cancellationToken)
     {
-        var customer = customerRepository.GetById(request.CustomerId) ?? throw new NotFoundException(nameof(Customer));
-        var folders = customer.Recipients
-            .Select(recipient => recipient.Id)
-            .Select(recipientRepository.GetById)
-            .Where(recipient => recipient is not null)
-            .Select(recipient => recipient!.Folder);
+        var customer = customerRepository.GetByIdIncludingRecipientsAndContens(request.CustomerId) ?? throw new NotFoundException(nameof(Customer));
+        var contents = customer
+            .Recipients
+            .Select(recipient => recipient.Folder)
+            .SelectMany(folder => folder.DigitalContents);
 
-        return Task.FromResult(folders);
+        return Task.FromResult(contents);
     }
 }

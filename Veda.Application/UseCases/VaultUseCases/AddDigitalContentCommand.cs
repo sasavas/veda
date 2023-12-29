@@ -12,19 +12,20 @@ public record AddDigitalContentCommand(int recipientId, string fileName, Stream 
 
 public class AddDigitalContentCommandHandler(
     IUnitOfWork unitOfWork,
+    ICustomerRepository customerRepository,
+    IRecipientRepository recipientRepository,
     ILogger<AddDigitalContentCommandHandler> logger)
     : IRequestHandler<AddDigitalContentCommand>
 {
     public Task Handle(AddDigitalContentCommand command, CancellationToken cancellationToken)
     {
-        var customerRepository = unitOfWork.GetRepository<Customer>();
-        var recipientRepository = unitOfWork.GetRepository<Recipient>();
-
-        var recipient = recipientRepository.GetById(command.recipientId) ?? throw new NotFoundException(nameof(Recipient));
-        var customer = customerRepository.GetById(recipient.CustomerId) ?? throw new NotFoundException(nameof(Customer));
+        var recipient = recipientRepository.GetByIdIncludingAllDigitalContent(command.recipientId) 
+                        ?? throw new NotFoundException(nameof(Recipient));
+        var customer = customerRepository.GetByIdIncludingRecipientsAndContens(recipient.CustomerId)
+                       ?? throw new NotFoundException(nameof(Customer));
         
         //TODO calculate the actual length when saved to File Storage (in bytes, of course)
-        var size = command.fileStream.Length;
+        var size = command.fileStream?.Length ?? 1_000;
 
         var (canAdd, message) = DigitalContentService.CanAddDigitalContent(customer, size);
         if (canAdd == false)
@@ -33,15 +34,17 @@ public class AddDigitalContentCommandHandler(
         }
         
         //TODO generate hash code of the file
-        var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo;
+        var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo.Value;
 
-        recipient.Folder.AddContent(DigitalContent.Create(command.fileName, size, hashcode));
+        recipient.AddContent(DigitalContent.Create(command.fileName, size, hashcode, DateTime.UtcNow));
         
         try
         {
             unitOfWork.BeginTransaction();
 
             recipientRepository.Update(recipient);
+            
+            //TODO: save the actual file to file storage API
 
             unitOfWork.Commit();
         }

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Veda.Api.Abstract;
+using Veda.Api.DTOs.Responses;
 using Veda.Api.Helpers;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Modules.RecipientModule.Models;
@@ -45,10 +46,20 @@ public class CustomerController(ISender mediatr, JwtProvider jwtProvider) : Base
     }
 
     [HttpGet("{customerId:int}/Recipients")]
-    public async Task<ActionResult<IEnumerable<Recipient>>> GetRecipients(int customerId)
+    public async Task<ActionResult<IEnumerable<RecipientDto>>> GetRecipients(int customerId)
     {
         var recipients = await mediatr.Send(new GetRecipientsRequest(customerId));
-        return Ok(recipients);
+        var recipientDtos = recipients
+            .Select(r => new RecipientDto(r.CustomerId, 
+                                                    r.FirstName, 
+                                                    r.LastName, 
+                                                    r.DateOfBirth, 
+                                                    r.TCKimlikNo.Value, 
+                                                    r.EMailAddress.Value,
+                                                    r.PhoneNumber.CountryCode + r.PhoneNumber.Number, 
+                                                    r.TotalCapacityOccupied()));
+        
+        return Ok(recipientDtos);
     }
     
     [HttpGet("AuthorizationTest/{test}")]

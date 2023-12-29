@@ -29,24 +29,25 @@ public class StartCustomerSubscriptionCommandHandler(
         {
             throw new NotFoundException(nameof(MembershipStatus));
         }
+        
+        customer.AddOrChangeMembership(Membership.Create(membershipStatus));
 
-        var newMembership = Membership.Create(membershipStatus);
-        customer.AddOrChangeMembership(newMembership);
-
-        unitOfWork.BeginTransaction();
         try
         {
+            unitOfWork.BeginTransaction();
             customerRepository.Update(customer);
             unitOfWork.Commit();
-
             return Task.FromResult(membershipStatus);
         }
         catch (Exception e)
         {
             unitOfWork.Rollback();
             logger.Log(LogLevel.Error, e, "Could not start customer membership");
-            
             throw;
+        }
+        finally
+        {
+            unitOfWork.Dispose();
         }
     }
 }
