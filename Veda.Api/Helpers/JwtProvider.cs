@@ -21,7 +21,7 @@ public class JwtProvider(IOptions<JwtConfiguration> jwtConfig)
             Subject = new ClaimsIdentity(new Claim[] 
             {
                 new Claim(ClaimTypes.NameIdentifier, customer.TCKimlikNo.Value), // Replace with actual username
-                new Claim(ClaimTypes.Email, customer.EmailAddress.Address),
+                new Claim(ClaimTypes.Email, customer.EmailAddress.Value),
                 new Claim(ClaimTypes.Role, customer.ActiveMemberShip?.MembershipStatus?.Id.ToString() ?? "")
             }),
             Expires = DateTime.UtcNow.AddHours(2), // Token expiry

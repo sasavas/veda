@@ -20,7 +20,7 @@ public class RecipientConfiguration : IEntityTypeConfiguration<Recipient>
 
         builder.Property(r => r.EMailAddress)
             .HasConversion(
-                email => email.Address,
+                email => email.Value,
                 value => new EmailAddress(value));
 
         builder.OwnsOne<PhoneNumber>(

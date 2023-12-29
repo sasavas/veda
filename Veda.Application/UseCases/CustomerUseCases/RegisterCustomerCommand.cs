@@ -49,7 +49,7 @@ public class RegisterCustomerCommandHandler(
             //TODO send via Domain events
             emailService.SendEmail(
                 new HtmlEmailDTO(
-                    new Veda.SharedKernel.Services.Email.EmailAddress(customer.EmailAddress.Address),
+                    new Veda.SharedKernel.Services.Email.EmailAddress(customer.EmailAddress.Value),
                     "Please verify your email address",
                     htmlService
                         .GetHtmlBuilder()

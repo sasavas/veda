@@ -17,7 +17,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             s => new TCKimlikNo(s));
 
         builder.Property(customer => customer.EmailAddress).HasConversion(
-            emailAddress => emailAddress.Address,
+            emailAddress => emailAddress.Value,
             address => new EmailAddress(address));
 
         builder.Property(customer => customer.Password).HasConversion(

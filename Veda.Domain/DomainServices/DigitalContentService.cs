@@ -16,14 +16,14 @@ public static class DigitalContentService
 
         var currentStorageInUse = customer.GetTotalStorageUsed();
         
-        if (activeMembership.MembershipStatus.DigitalStorageCapacityInBytes >= currentStorageInUse)
+        if (currentStorageInUse > activeMembership.MembershipStatus.DigitalStorageCapacityInBytes )
         {
             return (false, "Customer's current capacity is full");
         }
 
-        if (activeMembership.MembershipStatus.DigitalStorageCapacityInBytes >= (currentStorageInUse + contentSize))
+        if ((currentStorageInUse + contentSize)  > activeMembership.MembershipStatus.DigitalStorageCapacityInBytes)
         {
-            return (false, "The content's size is too large");
+            return (false, "Customer's folder does not have enough capacity for this file");
         }
 
         return (true, string.Empty);
