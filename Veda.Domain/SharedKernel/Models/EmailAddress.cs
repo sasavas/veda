@@ -4,13 +4,13 @@ namespace Veda.Application.SharedKernel.Models;
 
 public class EmailAddress : ValueObject
 {
-    public EmailAddress(string address)
+    public EmailAddress(string value)
     {
         //TODO validate
-        Address = address;
+        Value = value;
     }
 
-    public string Address { get; }
+    public string Value { get; }
 
     public override bool Equals(object? obj)
     {
@@ -21,7 +21,7 @@ public class EmailAddress : ValueObject
 
         return obj switch
         {
-            string => Address.Equals(obj),
+            string => Value.Equals(obj),
             EmailAddress emailAddress => Equals(emailAddress),
             _ => false
         };
@@ -29,11 +29,11 @@ public class EmailAddress : ValueObject
 
     protected bool Equals(EmailAddress other)
     {
-        return Address == other.Address;
+        return Value == other.Value;
     }
 
     public override int GetHashCode()
     {
-        return Address.GetHashCode();
+        return Value.GetHashCode();
     }
 }
