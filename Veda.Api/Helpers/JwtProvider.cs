@@ -22,7 +22,7 @@ public class JwtProvider(IOptions<JwtConfiguration> jwtConfig)
             {
                 new Claim(ClaimTypes.NameIdentifier, customer.TCKimlikNo.Value), // Replace with actual username
                 new Claim(ClaimTypes.Email, customer.EmailAddress.Value),
-                new Claim(ClaimTypes.Role, customer.ActiveMemberShip?.MembershipStatus?.Id.ToString() ?? "")
+                new Claim(ClaimTypes.Role, customer.ActiveMembership?.MembershipStatus?.Id.ToString() ?? "")
             }),
             Expires = DateTime.UtcNow.AddHours(2), // Token expiry
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature), 

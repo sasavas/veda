@@ -7,7 +7,7 @@ public static class DigitalContentService
 {
     public static (bool, string)  CanAddDigitalContent(Customer customer, long contentSize)
     {
-        var activeMembership = customer.ActiveMemberShip;
+        var activeMembership = customer.ActiveMembership;
 
         if (activeMembership is null)
         {

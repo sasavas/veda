@@ -30,7 +30,7 @@ public class StartCustomerSubscriptionCommandHandler(
             throw new NotFoundException(nameof(MembershipStatus));
         }
         
-        customer.AddOrChangeMembership(Membership.Create(membershipStatus));
+        customer.AddOrChangeMembership(membershipStatus);
 
         try
         {

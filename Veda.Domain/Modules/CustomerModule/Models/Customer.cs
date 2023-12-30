@@ -1,6 +1,7 @@
 using Veda.Application.Abstract;
 using Veda.Application.Modules.CustomerModule.Exceptions;
 using Veda.Application.Modules.RecipientModule.Models;
+using Veda.Application.SharedKernel.Exceptions;
 using Veda.Application.SharedKernel.Models;
 
 namespace Veda.Application.Modules.CustomerModule.Models;
@@ -18,7 +19,7 @@ public class Customer : Entity
     public Password Password { get; set; }
 
     public virtual ICollection<Membership> Memberships { get; set; } = new List<Membership>();
-    public Membership? ActiveMemberShip => Memberships.FirstOrDefault(m => m.Active);
+    public Membership? ActiveMembership => Memberships.FirstOrDefault(m => m.Active);
 
     public virtual ICollection<Recipient> Recipients { get; private set; } = new List<Recipient>();
 
@@ -38,7 +39,7 @@ public class Customer : Entity
 
     public bool IsMaxRecipientCapacityReached()
     {
-        var activeMembership = ActiveMemberShip;
+        var activeMembership = ActiveMembership;
         
         if(activeMembership is null)
         {
@@ -58,19 +59,24 @@ public class Customer : Entity
         return currentTotalSize;
     }
 
-    public void AddOrChangeMembership(Membership memberShip)
+    public void AddOrChangeMembership(MembershipStatus membershipStatus)
     {
+        if (ActiveMembership?.MembershipStatus.Equals(membershipStatus) ?? false)
+        {
+            throw new DomainException("Customer already is on this subscription level");
+        }
+        
         if (Memberships.Any(m => m.Active))
         {
             var membership = Memberships.First(m => m.Active);
             membership.EndMembership();
         }
 
-        Memberships.Add(memberShip);
+        Memberships.Add(Membership.Create(membershipStatus));
     }
 
     public void DeactiveCustomerAccount()
     {
-        ActiveMemberShip?.EndMembership();
+        ActiveMembership?.EndMembership();
     }
 }

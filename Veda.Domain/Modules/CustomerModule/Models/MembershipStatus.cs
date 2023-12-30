@@ -25,4 +25,21 @@ public class MembershipStatus : Entity
     /// How many recipient a Customer can have
     /// </summary>
     public int RecipientLimit { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is MembershipStatus membershipStatus 
+               && membershipStatus.StatusName.Equals(StatusName)
+               && membershipStatus.DigitalStorageCapacityInBytes.Equals(DigitalStorageCapacityInBytes)
+               && membershipStatus.RecipientLimit.Equals(RecipientLimit);
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            base.GetHashCode(),
+            StatusName,
+            DigitalStorageCapacityInBytes,
+            RecipientLimit);
+    }
 }
