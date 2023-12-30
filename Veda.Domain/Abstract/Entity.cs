@@ -13,7 +13,7 @@ public abstract class Entity
 
         if (obj is Entity entity)
         {
-            return entity.Id == this.Id;
+            return entity.Id == Id;
         }
 
         return false;
