@@ -43,4 +43,12 @@ public class Folder : Entity
         
         content.MarkAsDeleted(deletionTime);
     }
+
+    public void ClearContents(DateTime deletionTime)
+    {
+        foreach (var content in _digitalContents)
+        {
+            content.MarkAsDeleted(deletionTime);
+        }
+    }
 }

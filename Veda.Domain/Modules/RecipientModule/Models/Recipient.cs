@@ -51,5 +51,11 @@ public class Recipient : Entity
         Folder.RemoveContent(content, deletionTime);
     }
 
-    public long TotalCapacityOccupied() => Folder.DigitalContents.Sum(content => content.SizeInBytes);
+    public void ClearContents(DateTime deletionTime)
+    {
+        Folder.ClearContents(deletionTime);
+    }
+
+    public long TotalCapacityOccupied() => 
+        Folder.DigitalContents.Sum(content => content.SizeInBytes);
 }
