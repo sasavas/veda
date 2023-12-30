@@ -9,6 +9,8 @@ public class CustomerRepository(VedaDbContext context) : Repository<Customer>(co
     public Customer? GetByIdIncludingRecipients(int id)
     {
         return Context.Set<Customer>()
+            .Include(customer => customer.Memberships)
+            .ThenInclude(membership => membership.MembershipStatus)
             .Include(customer => customer.Recipients)
             .FirstOrDefault(customer => customer.Id == id);
     }
@@ -16,6 +18,8 @@ public class CustomerRepository(VedaDbContext context) : Repository<Customer>(co
     public Customer? GetByIdIncludingRecipientsAndContens(int id)
     {
         return Context.Set<Customer>()
+            .Include(customer => customer.Memberships)
+            .ThenInclude(membership => membership.MembershipStatus)
             .Include(customer => customer.Recipients)
             .ThenInclude(recipient => recipient.Folder)
             .ThenInclude(folder => folder.DigitalContents.Where(content => content.DeletionDate == null))
@@ -25,8 +29,11 @@ public class CustomerRepository(VedaDbContext context) : Repository<Customer>(co
     public IEnumerable<Customer> GetAllIncludingAll()
     {
         return Context.Set<Customer>()
+            .Include(customer => customer.Memberships)
+            .ThenInclude(membership => membership.MembershipStatus)
             .Include(customer => customer.Recipients)
             .ThenInclude(recipient => recipient.Folder)
-            .ThenInclude(folder => folder.DigitalContents.Where(content => content.DeletionDate == null));
+            .ThenInclude(folder => folder.DigitalContents.Where(content => content.DeletionDate == null))
+            .AsEnumerable();
     }
 }

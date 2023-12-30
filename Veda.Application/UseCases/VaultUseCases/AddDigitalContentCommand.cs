@@ -19,11 +19,11 @@ public class AddDigitalContentCommandHandler(
 {
     public Task Handle(AddDigitalContentCommand command, CancellationToken cancellationToken)
     {
-        var recipient = recipientRepository.GetByIdIncludingAllDigitalContent(command.recipientId) 
+        var recipient = recipientRepository.GetByIdIncludingAllDigitalContent(command.recipientId)
                         ?? throw new NotFoundException(nameof(Recipient));
         var customer = customerRepository.GetByIdIncludingRecipientsAndContens(recipient.CustomerId)
                        ?? throw new NotFoundException(nameof(Customer));
-        
+
         //TODO calculate the actual length when saved to File Storage (in bytes, of course)
         var size = command.fileStream?.Length ?? 1_000;
 
@@ -32,18 +32,18 @@ public class AddDigitalContentCommandHandler(
         {
             throw new DomainException(message);
         }
-        
+
         //TODO generate hash code of the file
         var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo.Value;
 
-        recipient.AddContent(DigitalContent.Create(command.fileName, size, hashcode, DateTime.UtcNow));
-        
+        recipient.AddContent(DigitalContent.Create(command.fileName, ".ogg", size, hashcode, DateTime.UtcNow));
+
         try
         {
             unitOfWork.BeginTransaction();
 
             recipientRepository.Update(recipient);
-            
+
             //TODO: save the actual file to file storage API
 
             unitOfWork.Commit();

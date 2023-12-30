@@ -21,7 +21,7 @@ public static class DependencyInjection
         services.AddDbContext<VedaDbContext>(
             options =>
             {
-                options.UseLazyLoadingProxies();
+                // options.UseLazyLoadingProxies();
                 options.EnableSensitiveDataLogging();
                 options.UseNpgsql(
                         "Server=127.0.0.1;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")

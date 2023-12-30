@@ -5,7 +5,7 @@ namespace Veda.Api.Controllers;
 
 public class FinancialsController : BaseController
 {
-    [HttpGet]
+    [HttpGet("Fatura")]
     public async Task<ActionResult> GetFatura()
     {
         return Ok("Fatura bilgileri");

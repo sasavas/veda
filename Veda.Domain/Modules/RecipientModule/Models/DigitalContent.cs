@@ -21,11 +21,13 @@ public class DigitalContent : Entity
     public DateTime UploadDate { get; private set; }
     public DateTime? DeletionDate { get; private set; }
 
-    public static DigitalContent Create(string name, long sizeInBytes, string fileHashCode, DateTime uploadDate)
+    public static DigitalContent Create(
+        string name, string fileExtension, long sizeInBytes, string fileHashCode, DateTime uploadDate)
     {
         return new DigitalContent
         {
             Name = name,
+            FileExtension = fileExtension,
             SizeInBytes = sizeInBytes,
             HashCode = fileHashCode,
             UploadDate = uploadDate,

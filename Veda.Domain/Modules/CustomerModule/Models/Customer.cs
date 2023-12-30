@@ -66,6 +66,8 @@ public class Customer : Entity
             throw new DomainException("Customer already is on this subscription level");
         }
         
+        //TODO: prevent Customer from going for a lower subscription level than the currently active one
+        
         if (Memberships.Any(m => m.Active))
         {
             var membership = Memberships.First(m => m.Active);
