@@ -41,8 +41,8 @@ public class CustomerController(ISender mediatr, JwtProvider jwtProvider) : Base
         //TODO:production get login userId ([Authorize] attribute required) for security
         //// var tcKimlikNo = GetLoginCustomerTcKimlikNo();
 
-        var membershipStatus = await mediatr.Send(command);
-        return Ok(membershipStatus);
+        await mediatr.Send(command);
+        return Ok();
     }
 
     [HttpGet("{customerId:int}/Recipients")]

@@ -6,26 +6,26 @@ using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 
-public record StartCustomerSubscriptionCommand(int CustomerId, int MembershipStatusId) : IRequest<MembershipStatus>;
+public record StartCustomerSubscriptionCommand(int CustomerId, int MembershipStatusId) : IRequest;
 
 public class StartCustomerSubscriptionCommandHandler(
     IUnitOfWork unitOfWork,
     ILogger<StartCustomerSubscriptionCommand> logger) 
-    : IRequestHandler<StartCustomerSubscriptionCommand, MembershipStatus>
+    : IRequestHandler<StartCustomerSubscriptionCommand>
 {
-    public Task<MembershipStatus> Handle(StartCustomerSubscriptionCommand request, CancellationToken cancellationToken)
+    public Task Handle(StartCustomerSubscriptionCommand request, CancellationToken cancellationToken)
     {
         var customerRepository = unitOfWork.GetRepository<Customer>();
         var membershipStatusRepository = unitOfWork.GetRepository<MembershipStatus>();
         
         var customer = customerRepository.GetById(request.CustomerId);
-        if (customer == null)
+        if (customer is null)
         {
             throw new NotFoundException(nameof(customer));
         }
         
         var membershipStatus = membershipStatusRepository.GetUnique(m => m.Id == request.MembershipStatusId);
-        if (membershipStatus == null)
+        if (membershipStatus is null)
         {
             throw new NotFoundException(nameof(MembershipStatus));
         }
