@@ -6,4 +6,6 @@ public class PhoneNumber(string countryCode, long number) : ValueObject
 {
     public string CountryCode { get; private set; } = countryCode;
     public long Number { get; private set; } = number;
+
+    public string FullNumber => $"{CountryCode}{Number}";
 }

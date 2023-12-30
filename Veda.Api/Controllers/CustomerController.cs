@@ -49,15 +49,7 @@ public class CustomerController(ISender mediatr, JwtProvider jwtProvider) : Base
     public async Task<ActionResult<IEnumerable<RecipientDto>>> GetRecipients(int customerId)
     {
         var recipients = await mediatr.Send(new GetRecipientsRequest(customerId));
-        var recipientDtos = recipients
-            .Select(r => new RecipientDto(r.CustomerId, 
-                                                    r.FirstName, 
-                                                    r.LastName, 
-                                                    r.DateOfBirth, 
-                                                    r.TCKimlikNo.Value, 
-                                                    r.EMailAddress.Value,
-                                                    r.PhoneNumber.CountryCode + r.PhoneNumber.Number, 
-                                                    r.TotalCapacityOccupied()));
+        var recipientDtos = recipients.Select(RecipientDto.FromRecipient);
         
         return Ok(recipientDtos);
     }

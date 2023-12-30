@@ -11,6 +11,26 @@ namespace Veda.Api.Controllers;
 
 public class AdminController(ISender mediator): BaseController
 {
+    [HttpGet("ListAllCustomers")]
+    public async Task<ActionResult<IEnumerable<CustomerDto>>> ListAllCustomers()
+    {
+        var customers = await mediator.Send(new ListAllCustomersRequest());
+        var summaryCustomers = customers.Select(CustomerDto.FromCustomerEntity);
+        
+        return Ok(summaryCustomers);
+    }
+    
+    [HttpGet("ListActiveCustomers")]
+    public async Task<ActionResult<IEnumerable<CustomerDto>>> ListActiveCustomers()
+    {
+        var customers = await mediator.Send(new ListAllCustomersRequest());
+        var summaryCustomers = customers
+            .Where(customer => customer.ActiveMembership is not null)
+            .Select(CustomerDto.FromCustomerEntity);
+        
+        return Ok(summaryCustomers);
+    }
+    
     [HttpPost("ChangeCustomerMembership")]
     public async Task<ActionResult> ChangeCustomerMembership(ChangeCustomerMembershipDto changeCustomerMembershipDto)
     {
@@ -25,14 +45,7 @@ public class AdminController(ISender mediator): BaseController
     public async Task<ActionResult<IEnumerable<AdminVaultListingFileDto>>> ListCustomerFiles(int customerId)
     {
         var files = await mediator.Send(new GetCustomerFilesRequest(customerId));
-
-        var summaryFiles = files
-            .Select(file => new AdminVaultListingFileDto(
-                                                            file.FileExtension,
-                                                            file.Name[..2],
-                                                            file.SizeInBytes,
-                                                            file.UploadDate));
-        
+        var summaryFiles = files.Select(AdminVaultListingFileDto.FromDigitalContent);
         return Ok(summaryFiles);
     }
     
@@ -40,14 +53,7 @@ public class AdminController(ISender mediator): BaseController
     public async Task<ActionResult<IEnumerable<AdminVaultListingFileDto>>> ListRecipientFiles(int customerId)
     {
         var files = await mediator.Send(new GetRecipientFilesRequest(customerId));
-        
-        var summaryFiles = files
-            .Select(file => new AdminVaultListingFileDto(
-                                                            file.FileExtension,
-                                                            //TODO show some part of the file name to the admin/operator
-                                                            file.Name?[..2] ?? string.Empty,
-                                                            file.SizeInBytes,
-                                                            file.UploadDate));
+        var summaryFiles = files.Select(AdminVaultListingFileDto.FromDigitalContent);
         return Ok(summaryFiles);
     }
     

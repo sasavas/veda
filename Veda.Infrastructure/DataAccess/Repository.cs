@@ -12,7 +12,7 @@ public class Repository<TEntity>(VedaDbContext context) : IRepository<TEntity>
 
     public virtual TEntity? GetById(int id) => Context.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
 
-    public virtual IEnumerable<TEntity> GetAll() => Context.Set<TEntity>();
+    public virtual IEnumerable<TEntity> GetAll() => Context.Set<TEntity>().ToList();
 
     public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().Where(filter);
 

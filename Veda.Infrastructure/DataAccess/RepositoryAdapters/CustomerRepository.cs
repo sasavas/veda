@@ -21,4 +21,12 @@ public class CustomerRepository(VedaDbContext context) : Repository<Customer>(co
             .ThenInclude(folder => folder.DigitalContents.Where(content => content.DeletionDate == null))
             .FirstOrDefault(customer => customer.Id == id);
     }
+
+    public IEnumerable<Customer> GetAllIncludingAll()
+    {
+        return Context.Set<Customer>()
+            .Include(customer => customer.Recipients)
+            .ThenInclude(recipient => recipient.Folder)
+            .ThenInclude(folder => folder.DigitalContents.Where(content => content.DeletionDate == null));
+    }
 }
