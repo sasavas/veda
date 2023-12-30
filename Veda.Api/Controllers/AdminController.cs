@@ -41,7 +41,7 @@ public class AdminController(ISender mediator): BaseController
         return Ok();
     }
     
-    [HttpPost("ListCustomerFiles/{customerId:int}")]
+    [HttpGet("ListCustomerFiles/{customerId:int}")]
     public async Task<ActionResult<IEnumerable<AdminVaultListingFileDto>>> ListCustomerFiles(int customerId)
     {
         var files = await mediator.Send(new GetCustomerFilesRequest(customerId));
@@ -49,7 +49,7 @@ public class AdminController(ISender mediator): BaseController
         return Ok(summaryFiles);
     }
     
-    [HttpPost("ListRecipientFiles/{customerId:int}")]
+    [HttpGet("ListRecipientFiles/{customerId:int}")]
     public async Task<ActionResult<IEnumerable<AdminVaultListingFileDto>>> ListRecipientFiles(int customerId)
     {
         var files = await mediator.Send(new GetRecipientFilesRequest(customerId));
