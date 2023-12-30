@@ -10,13 +10,13 @@ public class Repository<TEntity>(VedaDbContext context) : IRepository<TEntity>
     // ReSharper disable once MemberCanBePrivate.Global
     protected readonly VedaDbContext Context = context;
 
-    public TEntity? GetById(int id) => Context.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
+    public virtual TEntity? GetById(int id) => Context.Set<TEntity>().FirstOrDefault(entity => entity.Id == id);
 
     public virtual IEnumerable<TEntity> GetAll() => Context.Set<TEntity>();
 
-    public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().Where(filter);
+    public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().Where(filter);
 
-    public TEntity? GetUnique(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().FirstOrDefault(filter);
+    public virtual TEntity? GetUnique(Expression<Func<TEntity, bool>> filter) => Context.Set<TEntity>().FirstOrDefault(filter);
     
     public virtual TEntity Create(TEntity aggregateRoot)
     {

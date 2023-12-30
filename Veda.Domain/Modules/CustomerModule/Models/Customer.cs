@@ -68,4 +68,9 @@ public class Customer : Entity
 
         Memberships.Add(memberShip);
     }
+
+    public void DeactiveCustomerAccount()
+    {
+        ActiveMemberShip?.EndMembership();
+    }
 }

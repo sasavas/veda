@@ -17,7 +17,7 @@ public class Recipient : Entity
     public TCKimlikNo TCKimlikNo { get; set; }
     public EmailAddress EMailAddress { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
-
+    public DateTime? DeactivationDate { get; private set; }
     public virtual Folder Folder { get; set; }
 
     public static Recipient Create(int customerId, string firstName, string lastName, string tcKimlikNo, string emailAddress,
@@ -39,6 +39,12 @@ public class Recipient : Entity
             DateOfBirth = dateOfBirth,
             Folder = Folder.Create(uniqueFolderName)
         };
+    }
+
+    public void DeactivateRecipient(DateTime deactivationDate)
+    {
+        DeactivationDate = deactivationDate;
+        Folder.ClearContents(deactivationDate);
     }
         
     public void AddContent(DigitalContent content)

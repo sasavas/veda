@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Veda.Api.Abstract;
 using Veda.Api.DTOs.Requests;
 using Veda.Api.DTOs.Responses;
+using Veda.Application.UseCases.AdminUseCases;
 using Veda.Application.UseCases.CustomerUseCases;
 using Veda.Application.UseCases.VaultUseCases;
 
@@ -49,7 +50,14 @@ public class AdminController(ISender mediator): BaseController
                                                             file.UploadDate));
         return Ok(summaryFiles);
     }
-
+    
+    [HttpDelete("DeactivateCustomerAccount/{customerId:int}")]
+    public async Task<ActionResult> DeactivateCustomer(int customerId)
+    {
+        await mediator.Send(new DeactivateCustomerCommand(customerId));
+        return Ok();
+    }
+    
     [HttpDelete("ClearCustomerContent/{customerId:int}")]
     public async Task<ActionResult> ClearCustomerContent(int customerId)
     {
