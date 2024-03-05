@@ -23,9 +23,10 @@ public static class DependencyInjection
             {
                 // options.UseLazyLoadingProxies();
                 options.EnableSensitiveDataLogging();
-                options.UseNpgsql(
-                        "Server=34.140.112.19;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")
-                    .UseSnakeCaseNamingConvention();
+                options.UseInMemoryDatabase("veda");
+                    //UseNpgsql(
+                    //"Server=34.140.112.19;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")
+                    //.UseSnakeCaseNamingConvention();
                 //TODO: add connectionString via config later
             });
 
