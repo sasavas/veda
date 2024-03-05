@@ -1,0 +1,18 @@
+runtime: custom
+env: flex
+
+env_variables:
+  # Environment variables ensure your application runs smoothly in the App Engine environment.
+  # Add your environment-specific variables here.
+
+manual_scaling:
+  instances: 1  # You can adjust this based on your expected workload.
+
+resources:
+  cpu: 1
+  memory_gb: 1.5
+  disk_size_gb: 10
+
+# This section is for the entry point of your application.
+entrypoint: dotnet Veda.Api.dll
+
