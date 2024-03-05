@@ -88,7 +88,7 @@ if (app.Environment.IsDevelopment())
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<VedaDbContext>();
-    context.Database.Migrate();
+    context.Database.EnsureCreated();
     DatabaseSeeder.Seed(context);
 }
 
