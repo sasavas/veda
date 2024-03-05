@@ -23,9 +23,8 @@ public static class DependencyInjection
             {
                 // options.UseLazyLoadingProxies();
                 options.EnableSensitiveDataLogging();
-                options.UseMySql(
-                        "server=34.123.120.77;database=veda;user=root;password=1460", 
-                        new MySqlServerVersion(new Version(8, 0, 31)))
+                options.UseNpgsql(
+                        "Server=34.140.112.19;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")
                     .UseSnakeCaseNamingConvention();
                 //TODO: add connectionString via config later
             });
