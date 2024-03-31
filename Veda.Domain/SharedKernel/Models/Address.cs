@@ -1,6 +1,8 @@
+using Veda.Application.Abstract;
+
 namespace Veda.Application.SharedKernel.Models;
 
-public class Address
+public class Address : ValueObject
 {
     public string Title { get; set; }
     public string AddressField { get; set; }

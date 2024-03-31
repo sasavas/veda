@@ -1,8 +1,9 @@
+using Veda.Application.Abstract;
 using ValidationException = Veda.Application.SharedKernel.Exceptions.ValidationException;
 
 namespace Veda.Application.SharedKernel.Models;
 
-public class TCKimlikNo
+public class TCKimlikNo : ValueObject
 {
     public TCKimlikNo(string value)
     {
