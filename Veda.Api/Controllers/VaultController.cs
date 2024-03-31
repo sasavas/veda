@@ -29,7 +29,6 @@ public class VaultController(ISender mediator) : BaseController
     public async Task<ActionResult> AddDigitalContent([FromForm] AddDigitalContentDto digitalContentDto)
     {
         await using Stream fileStream = digitalContentDto.file.OpenReadStream();
-        await digitalContentDto.file.CopyToAsync(fileStream);
         
         await mediator.Send(
             new AddDigitalContentCommand(
