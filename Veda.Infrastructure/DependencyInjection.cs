@@ -23,12 +23,12 @@ public static class DependencyInjection
         services.AddDbContext<VedaDbContext>(
             options =>
             {
-                // options.UseLazyLoadingProxies();
-                // options.EnableSensitiveDataLogging();
-                options.UseInMemoryDatabase("veda");
-                    //UseNpgsql(
-                    //"Server=34.140.112.19;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")
-                    //.UseSnakeCaseNamingConvention();
+                options.UseLazyLoadingProxies();
+                options.EnableSensitiveDataLogging()
+                // options.UseInMemoryDatabase("veda");
+                .UseNpgsql(
+                    "Server=localhost;Port=5432;Database=veda;User Id=postgres;Password=1460;Include Error Detail=True;")
+                    .UseSnakeCaseNamingConvention();
                 //TODO: add connectionString via config later
             });
 
