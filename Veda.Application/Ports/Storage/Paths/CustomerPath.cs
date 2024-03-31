@@ -8,6 +8,6 @@ public class CustomerPath : RelativePath
 
     public CustomerPath(Customer customer)
     {
-        Value = customer.Id.ToString();
+        Value = "Customer" + customer.Id;
     }
 }

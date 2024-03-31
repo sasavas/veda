@@ -9,6 +9,6 @@ public class RecipientPath : RelativePath
 
     public RecipientPath(Customer recipient, Recipient customer)
     {
-        Value = Path.Combine(customer.Id.ToString(), recipient.Id.ToString());
+        Value = Path.Combine("Customer" + customer.Id, "Recipient" + recipient.Id);
     }
 }
