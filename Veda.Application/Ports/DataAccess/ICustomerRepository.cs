@@ -1,7 +1,6 @@
-using System.Linq.Expressions;
 using Veda.Application.Modules.CustomerModule.Models;
 
-namespace Veda.Application.DatabaseAccess;
+namespace Veda.Application.Ports.DataAccess;
 
 public interface ICustomerRepository : IRepository<Customer>
 {

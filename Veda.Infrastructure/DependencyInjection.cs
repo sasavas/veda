@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.Ports;
+using Veda.Application.Ports.DataAccess;
 using Veda.Infrastructure.DataAccess;
 using Veda.Infrastructure.DataAccess.RepositoryAdapters;
 using Veda.Infrastructure.ServiceImplementations;

@@ -1,6 +1,6 @@
 using MediatR;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Ports.DataAccess;
 
 namespace Veda.Application.UseCases.CustomerUseCases;
 

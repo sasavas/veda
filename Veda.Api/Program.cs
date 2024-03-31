@@ -1,7 +1,5 @@
-using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Veda.Api.Configurations;
@@ -25,11 +23,11 @@ builder.Services.AddAuthentication(x =>
     })
     .AddJwtBearer(x =>
     {
-        x.RequireHttpsMetadata = false; // For development, in production set to true
+        x.RequireHttpsMetadata = builder.Environment.IsDevelopment();
         x.SaveToken = true;
         x.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfiguration.Secret)),
+            IssuerSigningKey = new SymmetricSecurityKey("secret_must_be_longer_at_least_256_bit"u8.ToArray()),
             ValidateIssuerSigningKey = true,
             ValidateIssuer = true,
             ValidIssuer = jwtConfiguration.Issuer,

@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Veda.Application.Abstract;
-using Veda.Application.DatabaseAccess;
+using Veda.Application.Ports.DataAccess;
 
 namespace Veda.Infrastructure.DataAccess;
 

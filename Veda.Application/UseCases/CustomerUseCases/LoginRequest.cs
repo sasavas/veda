@@ -1,7 +1,7 @@
 using MediatR;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Ports;
+using Veda.Application.Ports.DataAccess;
 using Veda.Application.SharedKernel.Exceptions;
 using Veda.Application.SharedKernel.Models;
 

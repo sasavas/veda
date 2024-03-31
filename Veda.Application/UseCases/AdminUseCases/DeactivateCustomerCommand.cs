@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.DomainServices;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Ports.DataAccess;
 using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.AdminUseCases;

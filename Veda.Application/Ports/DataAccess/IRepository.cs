@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Veda.Application.Abstract;
 
-namespace Veda.Application.DatabaseAccess;
+namespace Veda.Application.Ports.DataAccess;
 
 public interface IRepository<TEntity> 
     where TEntity : Entity

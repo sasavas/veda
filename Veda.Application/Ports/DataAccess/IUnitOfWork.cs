@@ -1,6 +1,6 @@
 using Veda.Application.Abstract;
 
-namespace Veda.Application.DatabaseAccess;
+namespace Veda.Application.Ports.DataAccess;
 
 public interface IUnitOfWork : IDisposable
 {

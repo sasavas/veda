@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Ports;
+using Veda.Application.Ports.DataAccess;
 using Veda.Application.SharedKernel.Models;
 using Veda.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.HtmlHelper;

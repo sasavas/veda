@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Veda.Application.DatabaseAccess;
 using Veda.Application.Modules.CustomerModule.Models;
+using Veda.Application.Ports.DataAccess;
 
 namespace Veda.Infrastructure.DataAccess.RepositoryAdapters;
 
