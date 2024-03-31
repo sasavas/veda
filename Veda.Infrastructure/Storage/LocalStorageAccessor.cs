@@ -18,12 +18,14 @@ public class LocalStorageAccessor : IStorageAccessor
 
     public void UploadFile(Stream sourceStream, string fileName)
     {
+        var filePath = GetFullPath(fileName);
+
         if (sourceStream.CanSeek)
         {
             sourceStream.Seek(0, SeekOrigin.Begin);
         }
 
-        using FileStream fileStream = File.Create(fileName);
+        using FileStream fileStream = File.Create(filePath);
         sourceStream.CopyTo(fileStream);
     }
 
