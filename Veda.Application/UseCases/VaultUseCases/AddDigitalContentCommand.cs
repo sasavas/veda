@@ -1,9 +1,11 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Veda.Application.DomainServices;
 using Veda.Application.Modules.CustomerModule.Models;
 using Veda.Application.Modules.RecipientModule.Models;
+using Veda.Application.Ports;
 using Veda.Application.Ports.DataAccess;
+using Veda.Application.Ports.Storage;
+using Veda.Application.Ports.Storage.Paths;
 using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.VaultUseCases;
@@ -14,6 +16,8 @@ public class AddDigitalContentCommandHandler(
     IUnitOfWork unitOfWork,
     ICustomerRepository customerRepository,
     IRecipientRepository recipientRepository,
+    IFileHasher fileHasher,
+    IStorageAccessorFactory storageAccessorFactory,
     ILogger<AddDigitalContentCommandHandler> logger)
     : IRequestHandler<AddDigitalContentCommand>
 {
@@ -24,33 +28,33 @@ public class AddDigitalContentCommandHandler(
         var customer = customerRepository.GetByIdIncludingRecipientsAndContens(recipient.CustomerId)
                        ?? throw new NotFoundException(nameof(Customer));
 
-        //TODO calculate the actual length when saved to File Storage (in bytes, of course)
-        var size = command.fileStream?.Length ?? 1_000;
+        var size = command.fileStream.Length;
 
-        var (canAdd, message) = DigitalContentService.CanAddDigitalContent(customer, size);
+        var (canAdd, message) = customer.CanAddDigitalContent(size);
         if (canAdd == false)
         {
             throw new DomainException(message);
         }
 
-        //TODO generate hash code of the file
-        var hashcode = "ABC1230332&*@)$I" + recipient.TCKimlikNo.Value;
+        var hashcode = fileHasher.Generate(command.fileStream, recipient.TCKimlikNo.Value);
 
-        recipient.AddContent(DigitalContent.Create(command.fileName, ".ogg", size, hashcode, DateTime.UtcNow));
+        recipient.AddContent(
+            DigitalContent.Create(command.fileName, ".ogg", size, hashcode, DateTime.UtcNow));
 
         try
         {
+            //TODO: consider transactional integrity
+            
+            var storageAccessor = storageAccessorFactory.Generate(new RecipientPath(customer, recipient));
+            storageAccessor.UploadFile(command.fileStream, command.fileName);
+
             unitOfWork.BeginTransaction();
-
             recipientRepository.Update(recipient);
-
-            //TODO: save the actual file to file storage API
-
             unitOfWork.Commit();
         }
         catch (Exception e)
         {
-            logger.Log(LogLevel.Error, e, "Could not add digital content to the recipient's folder");
+            logger.LogError(e, "Could not add digital content to the recipient's folder");
             unitOfWork.Rollback();
             throw;
         }

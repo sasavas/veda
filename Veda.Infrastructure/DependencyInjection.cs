@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Veda.Application.Ports;
 using Veda.Application.Ports.DataAccess;
+using Veda.Application.Ports.Storage;
 using Veda.Infrastructure.DataAccess;
 using Veda.Infrastructure.DataAccess.RepositoryAdapters;
 using Veda.Infrastructure.ServiceImplementations;
+using Veda.Infrastructure.Storage;
 using Veda.SharedKernel.Services.Email;
 using Veda.SharedKernel.Services.HtmlHelper;
 
@@ -40,7 +42,9 @@ public static class DependencyInjection
         services.AddTransient<IHtmlService, HtmlService>();
         services.AddTransient<IHtmlBuilder, HtmlBuilder>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-
+        services.AddTransient<IStorageAccessorFactory, LocalStorageAccessorFactory>();
+        services.AddTransient<IFileHasher, DummyFileHasher>();
+        
         // ServiceProvider = services.BuildServiceProvider();
 
         return services;

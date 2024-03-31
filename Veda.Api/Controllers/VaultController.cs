@@ -26,12 +26,13 @@ public class VaultController(ISender mediator) : BaseController
     [HttpPost]
     public async Task<ActionResult> AddDigitalContent([FromForm] AddDigitalContentDto digitalContentDto)
     {
-        //TODO: send the acutal file after converting to stream
-        // await using FileStream fileStream = new FileStream();
-        // await digitalContentDto.file.CopyToAsync(fileStream);
+        await using Stream fileStream = digitalContentDto.file.OpenReadStream();
+        await digitalContentDto.file.CopyToAsync(fileStream);
         
-        await mediator.Send(new AddDigitalContentCommand(
-            digitalContentDto.recipientId, digitalContentDto.fileName, null));
+        await mediator.Send(
+            new AddDigitalContentCommand(
+                digitalContentDto.recipientId, digitalContentDto.fileName, fileStream));
+        
         return Ok();
     }
 

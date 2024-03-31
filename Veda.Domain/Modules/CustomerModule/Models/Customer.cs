@@ -48,6 +48,30 @@ public class Customer : Entity
 
         return activeMembership.MembershipStatus.RecipientLimit == Recipients.Count;
     }
+    
+    public (bool, string) CanAddDigitalContent(long contentSize)
+    {
+        var activeMembership = ActiveMembership;
+
+        if (activeMembership is null)
+        {
+            throw new CustomerDoesNotHaveActiveMembership("Customer does not have an active membership");
+        }
+
+        var currentStorageInUse = GetTotalStorageUsed();
+
+        if (currentStorageInUse > activeMembership.MembershipStatus.DigitalStorageCapacityInBytes)
+        {
+            return (false, "Customer's current capacity is full");
+        }
+
+        if (currentStorageInUse + contentSize > activeMembership.MembershipStatus.DigitalStorageCapacityInBytes)
+        {
+            return (false, "Customer's folder does not have enough capacity for this file");
+        }
+
+        return (true, string.Empty);
+    }
 
     public long GetTotalStorageUsed()
     {
