@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Veda.Api.Abstract;
 using Veda.Api.DTOs;
@@ -23,6 +24,7 @@ public class VaultController(ISender mediator) : BaseController
         return Ok(contents);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> AddDigitalContent([FromForm] AddDigitalContentDto digitalContentDto)
     {
