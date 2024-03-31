@@ -18,7 +18,7 @@ public record struct RegisterCustomerCommand(
     string Password,
     DateOnly DateOfBirth,
     PhoneNumber? PhoneNumber
-    ) : IRequest<RegisterCustomerResult>;
+) : IRequest<RegisterCustomerResult>;
 
 public record RegisterCustomerResult(Customer Customer);
 
@@ -31,21 +31,21 @@ public class RegisterCustomerCommandHandler(
 {
     public Task<RegisterCustomerResult> Handle(RegisterCustomerCommand command, CancellationToken cancellationToken)
     {
+        var customer = Customer.Create(
+            command.FirstName,
+            command.LastName,
+            command.DateOfBirth,
+            new TCKimlikNo(command.TcKimlikNo),
+            new EmailAddress(command.EmailAddress),
+            Password.Create(passwordHasher.HashPassword(command.Password)));
+
+        if (command.PhoneNumber != null)
+        {
+            customer.PhoneNumber = command.PhoneNumber;
+        }
+
         try
         {
-            var customer = Customer.Create(
-                command.FirstName,
-                command.LastName,
-                command.DateOfBirth,
-                new TCKimlikNo(command.TcKimlikNo),
-                new EmailAddress(command.EmailAddress),
-                Password.Create(passwordHasher.HashPassword(command.Password)));
-
-            if (command.PhoneNumber != null)
-            {
-                customer.PhoneNumber = command.PhoneNumber;
-            }
-
             //TODO send via Domain events
             emailService.SendEmail(
                 new HtmlEmailDTO(
@@ -58,7 +58,15 @@ public class RegisterCustomerCommandHandler(
                         .AddParagraph("If you were not expecting this email, please ignore")
                         .AddLink("www.google.com") //TODO: link to provide user to go to and verify registration
                         .Build()));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
+        try
+        {
             unitOfWork.BeginTransaction();
 
             var registeredCustomer = unitOfWork.GetRepository<Customer>().Create(customer);
