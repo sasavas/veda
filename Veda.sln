@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Veda.SharedKernel", "Veda.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Veda.Domain.Tests", "Veda.Domain.Tests\Veda.Domain.Tests.csproj", "{1D59F01A-C26B-4091-A703-932811E1F932}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Veda.IntegaretionTest", "Veda.IntegaretionTest\Veda.IntegaretionTest.csproj", "{1D1F88B4-88FD-4203-A8F6-698EF016A3D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,9 @@ Global
 		{1D59F01A-C26B-4091-A703-932811E1F932}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D59F01A-C26B-4091-A703-932811E1F932}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D59F01A-C26B-4091-A703-932811E1F932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1F88B4-88FD-4203-A8F6-698EF016A3D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1F88B4-88FD-4203-A8F6-698EF016A3D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1F88B4-88FD-4203-A8F6-698EF016A3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1F88B4-88FD-4203-A8F6-698EF016A3D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
