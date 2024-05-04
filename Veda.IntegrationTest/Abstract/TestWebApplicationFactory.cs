@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 using Veda.Infrastructure.DataAccess;
 
-namespace Veda.IntegaretionTest.Abstract;
+namespace Veda.IntegrationTest.Abstract;
 
 public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

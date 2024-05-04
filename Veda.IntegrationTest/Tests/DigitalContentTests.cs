@@ -3,16 +3,13 @@ using Veda.Application.SharedKernel.Models;
 using Veda.Application.UseCases.CustomerUseCases;
 using Veda.Application.UseCases.RecipientUseCases;
 using Veda.Application.UseCases.VaultUseCases;
-using Veda.IntegaretionTest.Abstract;
+using Veda.IntegrationTest.Abstract;
 
-namespace Veda.IntegaretionTest.Tests;
+namespace Veda.IntegrationTest.Tests;
 
-public class DigitalContentTests : BaseIntegrationTest
+public class DigitalContentTests(TestWebApplicationFactory factory) 
+    : BaseIntegrationTest(factory)
 {
-    public DigitalContentTests(TestWebApplicationFactory factory) : base(factory)
-    {
-    }
-
     [Fact]
     public async Task AddingDigitalContent_HappyPath()
     {

@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Veda.Application.Ports;
 using Veda.Application.Ports.DataAccess;
 using Veda.Application.Ports.Storage;
+using Veda.Application.Ports.Storage.Encryption;
+using Veda.Application.Ports.Storage.Hashing;
 using Veda.Infrastructure.DataAccess;
 using Veda.Infrastructure.DataAccess.RepositoryAdapters;
 using Veda.Infrastructure.ServiceImplementations;
@@ -43,7 +45,8 @@ public static class DependencyInjection
         services.AddTransient<IHtmlBuilder, HtmlBuilder>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IStorageAccessorFactory, LocalStorageAccessorFactory>();
-        services.AddTransient<IFileHasher, DummyFileHasher>();
+        services.AddTransient<IFileEncryptor, PgpFileEncryptor>();
+        services.AddTransient<IFileHasher, FileHasher>();
         
         // ServiceProvider = services.BuildServiceProvider();
 

@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Veda.Infrastructure.DataAccess;
 
-namespace Veda.IntegaretionTest.Abstract;
+namespace Veda.IntegrationTest.Abstract;
 
 public abstract class BaseIntegrationTest : IClassFixture<TestWebApplicationFactory>
 {
