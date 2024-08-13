@@ -52,6 +52,16 @@ public class Recipient : Entity
         Folder.AddContent(content);
     }
 
+    public DigitalContent? GetContent(int id)
+    {
+        return Folder.GetDigitalContent(id);
+    }
+    
+    public DigitalContent? GetContent(string name)
+    {
+        return Folder.GetDigitalContent(name);
+    }
+
     public void DeleteContent(DigitalContent content, DateTime deletionTime)
     {
         Folder.RemoveContent(content, deletionTime);

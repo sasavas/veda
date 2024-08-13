@@ -1,3 +1,3 @@
 namespace Veda.Api.DTOs;
 
-public record AddDigitalContentDto(int recipientId, string fileName, IFormFile file);
+public record AddDigitalContentDto(int recipientId, string targetFileName, IFormFile file, string fileExtension);

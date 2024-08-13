@@ -16,7 +16,7 @@ public class VaultController(ISender mediator) : BaseController
         var contents = await mediator.Send(new GetCustomerFilesRequest(customerId));
         return Ok(contents);
     }
-    
+
     [HttpGet("Recipient/{recipientId:int}")]
     public async Task<ActionResult<IEnumerable<Folder>>> GetAllRecipientContents(int recipientId)
     {
@@ -28,12 +28,15 @@ public class VaultController(ISender mediator) : BaseController
     [HttpPost]
     public async Task<ActionResult> AddDigitalContent([FromForm] AddDigitalContentDto digitalContentDto)
     {
-        await using Stream fileStream = digitalContentDto.file.OpenReadStream();
-        
+        await using var fileStream = digitalContentDto.file.OpenReadStream();
+
         await mediator.Send(
             new AddDigitalContentCommand(
-                digitalContentDto.recipientId, digitalContentDto.fileName, fileStream));
-        
+                digitalContentDto.recipientId,
+                digitalContentDto.targetFileName,
+                fileStream,
+                digitalContentDto.fileExtension));
+
         return Ok();
     }
 

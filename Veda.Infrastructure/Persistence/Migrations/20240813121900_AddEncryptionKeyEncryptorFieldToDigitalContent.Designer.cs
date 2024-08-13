@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Veda.Infrastructure.DataAccess;
 
 #nullable disable
 
-namespace Veda.Infrastructure.Migrations
+namespace Veda.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(VedaDbContext))]
-    partial class VedaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240813121900_AddEncryptionKeyEncryptorFieldToDigitalContent")]
+    partial class AddEncryptionKeyEncryptorFieldToDigitalContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

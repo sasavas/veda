@@ -45,7 +45,7 @@ public static class DependencyInjection
         services.AddTransient<IHtmlBuilder, HtmlBuilder>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IStorageAccessorFactory, LocalStorageAccessorFactory>();
-        services.AddTransient<IFileEncryptor, PgpFileEncryptor>();
+        services.AddTransient<IFileEncryptor, CustomFileEncryptor>();
         services.AddTransient<IFileHasher, FileHasher>();
         
         // ServiceProvider = services.BuildServiceProvider();

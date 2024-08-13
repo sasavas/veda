@@ -34,5 +34,5 @@
       <ProjectReference Include="..\Veda.Api\Veda.Api.csproj" />
       <ProjectReference Include="..\Veda.Infrastructure\Veda.Infrastructure.csproj" />
     </ItemGroup>
-
+    
 </Project>

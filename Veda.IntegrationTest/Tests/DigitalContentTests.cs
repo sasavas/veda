@@ -7,7 +7,7 @@ using Veda.IntegrationTest.Abstract;
 
 namespace Veda.IntegrationTest.Tests;
 
-public class DigitalContentTests(TestWebApplicationFactory factory) 
+public class DigitalContentTests(TestWebApplicationFactory factory)
     : BaseIntegrationTest(factory)
 {
     [Fact]
@@ -29,7 +29,7 @@ public class DigitalContentTests(TestWebApplicationFactory factory)
                 "test@test.com", "+90", 5446668877, 
                 new DateOnly(2000, 1, 1)));
 
-        await Sender.Send(new AddDigitalContentCommand(recipient.Id, "testfile", GenerateRandomFile("test")));
+        await Sender.Send(new AddDigitalContentCommand(recipient.Id, "testfile", GenerateRandomFile("test"), "txt"));
     }
 
     private static MemoryStream GenerateRandomFile(string text)

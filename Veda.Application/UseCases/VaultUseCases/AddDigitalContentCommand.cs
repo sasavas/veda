@@ -11,7 +11,8 @@ using Veda.Application.SharedKernel.Exceptions;
 
 namespace Veda.Application.UseCases.VaultUseCases;
 
-public record AddDigitalContentCommand(int RecipientId, string FileName, Stream FileStream) : IRequest;
+public record AddDigitalContentCommand(int RecipientId, string TargetFileName, Stream FileStream, string FileExtension)
+    : IRequest;
 
 public class AddDigitalContentCommandHandler(
     IUnitOfWork unitOfWork,
@@ -38,17 +39,25 @@ public class AddDigitalContentCommandHandler(
             throw new DomainException(message);
         }
 
-        var encryptedFileStream = fileEncryptor.Encrypt(command.FileStream, recipient.TCKimlikNo.Value);
-        var hashcode = fileHasher.ComputeSHA256(command.FileStream);
-        recipient.AddContent(
-            DigitalContent.Create(command.FileName, ".ogg", size, hashcode, DateTime.UtcNow));
+        var result = fileEncryptor.Encrypt(command.FileStream);
+
+        // save the encrypted file's hashcode and file encryptor key to Database
+        var hashcode = fileHasher.ComputeSHA256(result.encryptedFileContent);
+        recipient.AddContent(DigitalContent.Create(
+            command.TargetFileName,
+            command.FileExtension, /*TODO: file extension*/
+            size,
+            hashcode,
+            result.encryptedEncryptionKey,
+            DateTime.UtcNow));
 
         try
         {
             //TODO: consider transactional integrity
-            
+
+            // upload the file to a storage location for designated person
             var storageAccessor = storageAccessorFactory.Generate(new RecipientPath(customer, recipient));
-            storageAccessor.UploadFile(command.FileStream, command.FileName);
+            storageAccessor.UploadFile(result.encryptedFileContent, command.TargetFileName);
 
             unitOfWork.BeginTransaction();
             recipientRepository.Update(recipient);

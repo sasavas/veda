@@ -13,7 +13,7 @@ public class Folder : Entity
 
     private readonly ICollection<DigitalContent> _digitalContents = new List<DigitalContent>();
     public virtual IReadOnlyCollection<DigitalContent> DigitalContents => new List<DigitalContent>(_digitalContents);
-    
+
     public string FolderName { get; set; }
     public double SizeOccupied { get; private set; }
 
@@ -33,14 +33,24 @@ public class Folder : Entity
     {
         _digitalContents.Add(content);
     }
-    
+
+    public DigitalContent? GetDigitalContent(int digitalContentId)
+    {
+        return _digitalContents.FirstOrDefault(c => c.Id == digitalContentId);
+    }
+
+    public DigitalContent? GetDigitalContent(string name)
+    {
+        return _digitalContents.FirstOrDefault(c => c.Name == name);
+    }
+
     public void RemoveContent(DigitalContent content, DateTime deletionTime)
     {
         if (!_digitalContents.Contains(content))
         {
             throw new DomainException("This folder does not contain any such content");
         }
-        
+
         content.MarkAsDeleted(deletionTime);
     }
 

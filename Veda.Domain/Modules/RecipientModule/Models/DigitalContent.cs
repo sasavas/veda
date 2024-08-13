@@ -20,9 +20,10 @@ public class DigitalContent : Entity
     public string HashCode { get; private set; }
     public DateTime UploadDate { get; private set; }
     public DateTime? DeletionDate { get; private set; }
+    public byte[] EncryptedFileEncryptionKey { get; private set; }
 
     public static DigitalContent Create(
-        string name, string fileExtension, long sizeInBytes, string fileHashCode, DateTime uploadDate)
+        string name, string fileExtension, long sizeInBytes, string fileHashCode, byte[] encryptedFileEncryptionKey, DateTime uploadDate)
     {
         return new DigitalContent
         {
@@ -30,6 +31,7 @@ public class DigitalContent : Entity
             FileExtension = fileExtension,
             SizeInBytes = sizeInBytes,
             HashCode = fileHashCode,
+            EncryptedFileEncryptionKey = encryptedFileEncryptionKey,
             UploadDate = uploadDate,
         };
     }
