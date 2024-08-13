@@ -11,3 +11,4 @@ riderModule.iml
 .vs/Veda/v17/.futdcache.v2
 .vs/Veda/v17/.suo
 Veda.Api/Veda.Api.csproj.user
+.DS_Store
